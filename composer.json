@@ -9,10 +9,10 @@
 			"email": "wischerdson@gmail.com"
 		}
 	],
-	"homepage": "https://github.com/wischerdson/html-meta",
+	"homepage": "https://github.com/osmuhin/html-meta",
 	"support": {
-		"issues": "https://github.com/wischerdson/html-meta/issues",
-		"source": "https://github.com/wischerdson/html-meta"
+		"issues": "https://github.com/osmuhin/html-meta/issues",
+		"source": "https://github.com/osmuhin/html-meta"
 	},
 	"require": {
 		"php": ">=8.2",
