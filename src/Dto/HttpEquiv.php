@@ -89,7 +89,8 @@ class HttpEquiv implements Dto
 			'refresh' => $this->refresh,
 			'contentSecurityPolicy' => $this->contentSecurityPolicy,
 			'xDnsPrefetchControl' => $this->xDnsPrefetchControl,
-			'accessControlAllowOrigin' => $this->accessControlAllowOrigin
-		] + $this->other;
+			'accessControlAllowOrigin' => $this->accessControlAllowOrigin,
+			'other' => $this->other,
+		];
 	}
 }

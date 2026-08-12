@@ -117,4 +117,13 @@ final class OpenGraphDistributorTest extends TestCase
 
 		self::assertSame(['fr_FR', 'es_ES'], $this->meta->openGraph->alternateLocales);
 	}
+
+	public function test_unknown_og_property_goes_to_unrecognized_meta(): void
+	{
+		$this->distributor->el = self::makeMetaWithProperty('og:custom', 'custom-value');
+		$this->distributor->canHandle();
+		$this->distributor->handle();
+
+		self::assertSame(['og:custom' => 'custom-value'], $this->meta->unrecognizedMeta);
+	}
 }

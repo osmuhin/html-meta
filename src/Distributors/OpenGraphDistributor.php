@@ -4,6 +4,7 @@ namespace Osmuhin\HtmlMeta\Distributors;
 
 use Osmuhin\HtmlMeta\DataMappers\OpenGraphDataMapper;
 
+/** Handles Open Graph `property="og:*"` meta tags. */
 class OpenGraphDistributor extends AbstractDistributor
 {
 	protected string $handlerMethod;
@@ -106,5 +107,7 @@ class OpenGraphDistributor extends AbstractDistributor
 
 			return;
 		}
+
+		$this->meta->unrecognizedMeta[$property] = $content;
 	}
 }

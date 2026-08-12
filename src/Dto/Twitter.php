@@ -66,7 +66,8 @@ class Twitter implements Dto
 			'description' => $this->description,
 			'image' => $this->image,
 			'imageAlt' => $this->imageAlt,
-			'creator' => $this->creator
-		] + $this->other;
+			'creator' => $this->creator,
+			'other' => $this->other,
+		];
 	}
 }

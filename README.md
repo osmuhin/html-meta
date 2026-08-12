@@ -1,9 +1,9 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/wischerdson/html-meta/refs/heads/master/docs/logo.svg" alt="HTML meta logo" width="320">
+    <img src="https://raw.githubusercontent.com/osmuhin/html-meta/refs/heads/master/docs/logo.svg" alt="HTML meta logo" width="320">
 </p>
 
 <p align="center">
-    <img src="https://github.com/wischerdson/html-meta/actions/workflows/tests.yml/badge.svg" alt="Tests status">
+    <img src="https://github.com/osmuhin/html-meta/actions/workflows/tests.yml/badge.svg" alt="Tests status">
     <a href="https://packagist.org/packages/osmuhin/html-meta"><img src="https://poser.pugx.org/osmuhin/html-meta/d/total.svg" alt="Total Downloads"></a>
     <img src="https://poser.pugx.org/osmuhin/html-meta/license.svg" alt="License">
 </p>
@@ -54,10 +54,12 @@ $meta = Crawler::init(html: $html, url: 'https://google.com')->run();
 
 $icon = $meta->favicon->icons[0];
 
-echo $icon->url // https://google.com/favicon.ico
+echo $icon->url; // https://google.com/favicon.ico
 ```
 
 > Always pass the `url` parameter when using raw HTML to resolve relative paths correctly.
+>
+> Relative URL resolution follows RFC 3986: a base without a trailing slash treats the last path segment as a file. Use a trailing slash (e.g. `https://example.com/dir/`) when the base should act as a directory.
 
 ### Using a Custom Request Object
 
@@ -114,8 +116,8 @@ The main interaction happens through the `$crawler` object of type `\Osmuhin\Htm
 
     * passes the parsed elements to the distributor stack;
 
-    * the found HTML element is pass to the distributor stack <br>
-    If the HTML element passed the conditions, then its value is written to [DTO (Data Transfer Object)](https://en.wikipedia.org/wiki/Data_transfer_object ) of the type `\Osmuhin\HtmlMeta\Contracts\Dto`;
+    * the found HTML element is passed to the distributor stack <br>
+    If the HTML element passed the conditions, then its value is written to [DTO (Data Transfer Object)](https://en.wikipedia.org/wiki/Data_transfer_object) of the type `\Osmuhin\HtmlMeta\Contracts\Dto`;
 
     * after parsing the HTML string, the root DTO `\Osmuhin\HtmlMeta\Dto\Meta` is formed in output.
 

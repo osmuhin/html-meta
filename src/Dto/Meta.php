@@ -176,9 +176,10 @@ class Meta implements Dto
 			'robots' => $this->robots,
 			'themeColor' => $this->themeColor,
 			'title' => $this->title,
-			'twitter' => $this->twitter,
+			'twitter' => $this->twitter->toArray(),
 			'viewport' => $this->viewport,
-			'canonical' => $this->canonical
+			'canonical' => $this->canonical,
+			'unrecognizedMeta' => $this->unrecognizedMeta,
 		];
 	}
 }

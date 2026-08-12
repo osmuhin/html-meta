@@ -153,7 +153,7 @@ $meta->copyright === 'Apple Inc.';
 ```
 
 ```php
-$meta->description === 'Some description.';
+$meta->description === 'Some description';
 ```
 </details>
 
@@ -199,7 +199,7 @@ $meta->favicon->toArray() === [
     ],
     'appleTouchIcons' => [
         [
-            'url' => 'apple.com/apple-touch-icon.png',
+            'url' => 'http://example.com/path/apple.com/apple-touch-icon.png',
             'mime' => 'image/png',
             'extension' => 'png',
             'width' => null,
@@ -292,7 +292,7 @@ $meta->httpEquiv->toArray() === [
     'contentSecurityPolicy' => "default-src 'self';",
     'xDnsPrefetchControl' => 'on',
     'accessControlAllowOrigin' => '*',
-    'non-standart-meta' => 'some-value'
+    'other' => ['non-standart-meta' => 'some-value']
 ];
 ```
 </details>
@@ -516,7 +516,7 @@ $meta->viewport === 'width=device-width, initial-scale=1';
 </details>
 
 ### unrecognizedMeta
-`array<string>`
+`array<string, string>`
 
 <details>
 <summary>Example</summary>
@@ -584,7 +584,7 @@ $meta->favicon->icons[0]->toArray() === [
 
 ```php
 $meta->favicon->appleTouchIcons[0]->toArray() === [
-    'url' => 'apple.com/apple-touch-icon.png',
+    'url' => 'https://example.com/path/apple.com/apple-touch-icon.png',
     'mime' => 'image/png',
     'extension' => 'png',
     'width' => null,
@@ -697,7 +697,7 @@ $meta->httpEquiv->expires === 'Tue, January 01, 2025, 12:00:00 GMT';
 ```
 
 ```php
-$meta->httpEquiv->expires === '5; url=https://example.com';
+$meta->httpEquiv->refresh === '5; url=https://example.com';
 ```
 </details>
 
@@ -899,14 +899,12 @@ $meta->openGraph->alternateLocales === ['en_US'];
 
 ```php
 $meta->openGraph->images[0]->toArray() === [
-    [
-        'url' => 'https://example.com/image.jpg',
-        'secureUrl' => null,
-        'type' => 'image/jpeg',
-        'width' => null,
-        'height' => null,
-        'alt' => 'Image description',
-    ]
+    'url' => 'https://example.com/image.jpg',
+    'secureUrl' => null,
+    'type' => 'image/jpeg',
+    'width' => null,
+    'height' => null,
+    'alt' => 'Image description',
 ];
 ```
 </details>
@@ -923,13 +921,11 @@ $meta->openGraph->images[0]->toArray() === [
 
 ```php
 $meta->openGraph->videos[0]->toArray() === [
-    [
-        'url' => 'https://example.com/video.mp4',
-        'secureUrl' => null,
-        'type' => 'video/mp4',
-        'width' => null,
-        'height' => null
-    ]
+    'url' => 'https://example.com/video.mp4',
+    'secureUrl' => null,
+    'type' => 'video/mp4',
+    'width' => null,
+    'height' => null
 ];
 ```
 </details>
@@ -946,11 +942,9 @@ $meta->openGraph->videos[0]->toArray() === [
 
 ```php
 $meta->openGraph->audio[0]->toArray() === [
-    [
-        'url' => 'https://example.com/audio.mp3',
-        'secureUrl' => null,
-        'type' => 'audio/mpeg'
-    ]
+    'url' => 'https://example.com/audio.mp3',
+    'secureUrl' => null,
+    'type' => 'audio/mpeg'
 ];
 ```
 </details>
