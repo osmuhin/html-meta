@@ -21,7 +21,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -37,7 +37,16 @@ jobs:
         echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
     - name: Install PHP dependencies
-      run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi
+      env:
+        COMPOSER_CAFILE: /etc/ssl/certs/ca-certificates.crt
+      run: |
+        # Keep strict TLS verification and use runner CA bundle explicitly.
+        composer config --global secure-http true
+        composer config --global cafile "$COMPOSER_CAFILE"
+
+        # Prefer dist for speed; if GitHub API zip download fails on TLS, retry from source.
+        composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-progress --ansi \
+          || composer update --${{ matrix.dependency-version }} --no-interaction --prefer-source --no-progress --ansi
 
     - name: Run Unit With PHPUnit
       run: composer test:phpunit:partial
