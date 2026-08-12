@@ -61,6 +61,34 @@ class OpenGraphDataMapper extends AbstractDataMapper
 		];
 	}
 
+	protected function getArticleMap(): array
+	{
+		return [
+			'article:published_time' => 'publishedTime',
+			'article:modified_time' => 'modifiedTime',
+			'article:expiration_time' => 'expirationTime',
+			'article:section' => 'section',
+		];
+	}
+
+	protected function getBookMap(): array
+	{
+		return [
+			'book:isbn' => 'isbn',
+			'book:release_date' => 'releaseDate',
+		];
+	}
+
+	protected function getProfileMap(): array
+	{
+		return [
+			'profile:first_name' => 'firstName',
+			'profile:last_name' => 'lastName',
+			'profile:username' => 'username',
+			'profile:gender' => 'gender',
+		];
+	}
+
 	public function assign(string $key, string $content): bool
 	{
 		return $this->assignAccordingToTheMap(
@@ -126,5 +154,68 @@ class OpenGraphDataMapper extends AbstractDataMapper
 		$this->meta->openGraph->audio[] = $audio;
 
 		return $assignmentResult;
+	}
+
+	public function assignArticle(string $key, string $content): bool
+	{
+		if ($key === 'article:author') {
+			$this->meta->openGraph->article->authors[] = $content;
+
+			return true;
+		}
+
+		if ($key === 'article:tag') {
+			$this->meta->openGraph->article->tags[] = $content;
+
+			return true;
+		}
+
+		$result = $this->assignAccordingToTheMap($this->getArticleMap(), $this->meta->openGraph->article, $key, $content);
+
+		if (!$result && str_starts_with($key, 'article:')) {
+			$this->meta->openGraph->article->other[$key] = $content;
+
+			return true;
+		}
+
+		return $result;
+	}
+
+	public function assignBook(string $key, string $content): bool
+	{
+		if ($key === 'book:author') {
+			$this->meta->openGraph->book->authors[] = $content;
+
+			return true;
+		}
+
+		if ($key === 'book:tag') {
+			$this->meta->openGraph->book->tags[] = $content;
+
+			return true;
+		}
+
+		$result = $this->assignAccordingToTheMap($this->getBookMap(), $this->meta->openGraph->book, $key, $content);
+
+		if (!$result && str_starts_with($key, 'book:')) {
+			$this->meta->openGraph->book->other[$key] = $content;
+
+			return true;
+		}
+
+		return $result;
+	}
+
+	public function assignProfile(string $key, string $content): bool
+	{
+		$result = $this->assignAccordingToTheMap($this->getProfileMap(), $this->meta->openGraph->profile, $key, $content);
+
+		if (!$result && str_starts_with($key, 'profile:')) {
+			$this->meta->openGraph->profile->other[$key] = $content;
+
+			return true;
+		}
+
+		return $result;
 	}
 }

@@ -19,6 +19,9 @@ class OpenGraphDistributor extends AbstractDistributor
 	{
 		return [
 			'og' => 'setOg',
+			'article' => 'setExtendedOg',
+			'book' => 'setExtendedOg',
+			'profile' => 'setExtendedOg',
 		];
 	}
 
@@ -92,6 +95,25 @@ class OpenGraphDistributor extends AbstractDistributor
 				asNew: str_ends_with($property, 'audio') || str_ends_with($property, 'audio:url')
 			);
 
+			return;
+		}
+
+		$this->meta->openGraph->other[$property] = $content;
+	}
+
+	protected function setExtendedOg(string $property, string $content): void
+	{
+		$mapper = $this->dataMapper(OpenGraphDataMapper::class);
+
+		if ($mapper->assignArticle($property, $content)) {
+			return;
+		}
+
+		if ($mapper->assignBook($property, $content)) {
+			return;
+		}
+
+		if ($mapper->assignProfile($property, $content)) {
 			return;
 		}
 

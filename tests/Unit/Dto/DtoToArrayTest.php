@@ -4,6 +4,7 @@ namespace Tests\Unit\Dto;
 
 use Osmuhin\HtmlMeta\Dto\HttpEquiv;
 use Osmuhin\HtmlMeta\Dto\Meta;
+use Osmuhin\HtmlMeta\Dto\OpenGraph;
 use Osmuhin\HtmlMeta\Dto\Twitter;
 use PHPUnit\Framework\TestCase;
 
@@ -61,5 +62,16 @@ final class DtoToArrayTest extends TestCase
 		assertIsArray($array['openGraph']);
 		assertIsArray($array['httpEquiv']);
 		assertSame(['fb:app_id' => '1'], $array['unrecognizedMeta']);
+	}
+
+	public function test_opengraph_to_array_includes_extended_namespaces(): void
+	{
+		$openGraph = new OpenGraph();
+		$array = $openGraph->toArray();
+
+		assertArrayHasKey('article', $array);
+		assertArrayHasKey('book', $array);
+		assertArrayHasKey('profile', $array);
+		assertArrayHasKey('other', $array);
 	}
 }

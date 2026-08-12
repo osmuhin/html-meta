@@ -87,6 +87,25 @@ $meta = Crawler::init(url: 'https://example.com')
 
 All properties of the `meta` object are described [**here**](/docs/meta-object-properties.md).
 
+### Extended Open Graph namespaces
+
+The crawler supports extended Open Graph namespaces in addition to base `og:*` tags:
+
+- `article:*` -> `$meta->openGraph->article`
+- `book:*` -> `$meta->openGraph->book`
+- `profile:*` -> `$meta->openGraph->profile`
+
+Unknown base `og:*` keys are preserved in `$meta->openGraph->other`.
+
+```php
+$meta = Crawler::init(html: $html, url: 'https://example.com')->run();
+
+$meta->openGraph->article->publishedTime; // article:published_time
+$meta->openGraph->book->isbn;             // book:isbn
+$meta->openGraph->profile->firstName;     // profile:first_name
+$meta->openGraph->other;                  // unmapped og:* keys
+```
+
 ## Configuration
 <a name="config"></a>
 

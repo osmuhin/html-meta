@@ -3,8 +3,11 @@
 namespace Osmuhin\HtmlMeta\Dto;
 
 use Osmuhin\HtmlMeta\Contracts\Dto;
+use Osmuhin\HtmlMeta\Dto\OpenGraph\Article;
 use Osmuhin\HtmlMeta\Dto\OpenGraph\Audio;
+use Osmuhin\HtmlMeta\Dto\OpenGraph\Book;
 use Osmuhin\HtmlMeta\Dto\OpenGraph\Image;
+use Osmuhin\HtmlMeta\Dto\OpenGraph\Profile;
 use Osmuhin\HtmlMeta\Dto\OpenGraph\Video;
 
 /**
@@ -43,6 +46,22 @@ class OpenGraph implements Dto
 	/** @var \Osmuhin\HtmlMeta\Dto\OpenGraph\Audio[] */
 	public array $audio = [];
 
+	public Article $article;
+
+	public Book $book;
+
+	public Profile $profile;
+
+	/** @var array<string, string> */
+	public array $other = [];
+
+	public function __construct()
+	{
+		$this->article = new Article();
+		$this->book = new Book();
+		$this->profile = new Profile();
+	}
+
 	public function toArray(): array
 	{
 		return [
@@ -57,6 +76,10 @@ class OpenGraph implements Dto
 			'images' => array_map(fn (Image $image) => $image->toArray(), $this->images),
 			'videos' => array_map(fn (Video $video) => $video->toArray(), $this->videos),
 			'audio' => array_map(fn (Audio $audio) => $audio->toArray(), $this->audio),
+			'article' => $this->article->toArray(),
+			'book' => $this->book->toArray(),
+			'profile' => $this->profile->toArray(),
+			'other' => $this->other,
 		];
 	}
 }

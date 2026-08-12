@@ -210,7 +210,31 @@ class HtmlMetaCrawlerTest extends TestCase
 					'secureUrl' => 'https://example.com/audio.mp3',
 					'type' => 'audio/mpeg'
 				]
-			]
+			],
+			'article' => [
+				'publishedTime' => '2026-08-12T11:00:00+03:00',
+				'modifiedTime' => null,
+				'expirationTime' => null,
+				'section' => 'Tech',
+				'authors' => ['https://example.com/authors/alice'],
+				'tags' => ['php'],
+				'other' => []
+			],
+			'book' => [
+				'authors' => [],
+				'isbn' => '9780306406157',
+				'releaseDate' => null,
+				'tags' => [],
+				'other' => []
+			],
+			'profile' => [
+				'firstName' => 'Alice',
+				'lastName' => 'Example',
+				'username' => 'alice',
+				'gender' => 'female',
+				'other' => []
+			],
+			'other' => []
 		], $meta->openGraph->toArray());
 
 		assertSame([

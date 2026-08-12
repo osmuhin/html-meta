@@ -124,6 +124,43 @@ final class OpenGraphDistributorTest extends TestCase
 		$this->distributor->canHandle();
 		$this->distributor->handle();
 
-		self::assertSame(['og:custom' => 'custom-value'], $this->meta->unrecognizedMeta);
+		self::assertSame(['og:custom' => 'custom-value'], $this->meta->openGraph->other);
+	}
+
+	public function test_article_properties_are_mapped(): void
+	{
+		$this->distributor->el = self::makeMetaWithProperty('article:section', 'Tech');
+		$this->distributor->canHandle();
+		$this->distributor->handle();
+
+		$this->distributor->el = self::makeMetaWithProperty('article:author', 'https://example.com/authors/alice');
+		$this->distributor->canHandle();
+		$this->distributor->handle();
+
+		$this->distributor->el = self::makeMetaWithProperty('article:tag', 'php');
+		$this->distributor->canHandle();
+		$this->distributor->handle();
+
+		self::assertSame('Tech', $this->meta->openGraph->article->section);
+		self::assertSame(['https://example.com/authors/alice'], $this->meta->openGraph->article->authors);
+		self::assertSame(['php'], $this->meta->openGraph->article->tags);
+	}
+
+	public function test_book_properties_are_mapped(): void
+	{
+		$this->distributor->el = self::makeMetaWithProperty('book:isbn', '9780306406157');
+		$this->distributor->canHandle();
+		$this->distributor->handle();
+
+		self::assertSame('9780306406157', $this->meta->openGraph->book->isbn);
+	}
+
+	public function test_profile_properties_are_mapped(): void
+	{
+		$this->distributor->el = self::makeMetaWithProperty('profile:first_name', 'Alice');
+		$this->distributor->canHandle();
+		$this->distributor->handle();
+
+		self::assertSame('Alice', $this->meta->openGraph->profile->firstName);
 	}
 }
