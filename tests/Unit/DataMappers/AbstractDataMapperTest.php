@@ -106,7 +106,7 @@ final class AbstractDataMapperTest extends TestCase
 	#[DataProvider('providerForTestingOfUrlProcessing')]
 	public function test_url_processing(bool $useUrlProcessing, string $input, mixed $expected): void
 	{
-		$this->config->processUrlsWith('http://example.com/api');
+		$this->config->processUrlsWith('http://example.com/api/');
 		$this->config->dontProcessUrls(!$useUrlProcessing);
 
 		$dataMapper = $this->getMockBuilder(AbstractDataMapper::class)

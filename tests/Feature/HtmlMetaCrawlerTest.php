@@ -104,7 +104,7 @@ class HtmlMetaCrawlerTest extends TestCase
 	{
 		$html = file_get_contents(__DIR__ . '/resources/favicon.html');
 
-		$meta = Crawler::init(html: $html, url: 'http://example.com/path')->run();
+		$meta = Crawler::init(html: $html, url: 'http://example.com/path/')->run();
 
 		assertSame([
 			'manifest' => 'http://example.com/manifest.webmanifest',
@@ -172,7 +172,7 @@ class HtmlMetaCrawlerTest extends TestCase
 	{
 		$html = file_get_contents(__DIR__ . '/resources/opengraph.html');
 
-		$crawler = Crawler::init(html: $html, url: 'http://yandex.ru/path');
+		$crawler = Crawler::init(html: $html, url: 'http://yandex.ru/path/');
 
 		$meta = $crawler->run();
 

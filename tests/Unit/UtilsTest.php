@@ -30,12 +30,30 @@ class UtilsTest extends TestCase
 	{
 		return [
 			['https://example1.com/', ['https://example1.com', '']],
+			['https://example1.com', ['https://example1.com', '']],
+			['http://example4.com/some-path-1/some-path-2/', ['http://example4.com', 'some-path-1/some-path-2']],
+			['http://example4.com/some-path-1/some-path-2', ['http://example4.com', 'some-path-1/some-path-2']],
+			['//cdn.example.com/path/', ['//cdn.example.com', 'path']],
+			['/some-path-1/path/', ['', 'some-path-1/path']],
 			['example2.com', ['', 'example2.com']],
-			['example3.com///some-path', ['', 'example3.com///some-path']],
-			['http://example4.com/some-path-1/some-path-2//', ['http://example4.com', 'some-path-1/some-path-2']],
-			['//some-path-1/path///', ['//some-path-1', 'path']],
-			['/some-path-1/path///', ['', 'some-path-1/path']],
-			['some-path-1/path///', ['', 'some-path-1/path']]
+		];
+	}
+
+	public static function processUrlProvider(): array
+	{
+		return [
+			['https://example.com', '/favicon.ico', 'https://example.com/favicon.ico'],
+			['https://example.com', 'favicon.ico', 'https://example.com/favicon.ico'],
+			['https://example.com/', 'favicon.ico', 'https://example.com/favicon.ico'],
+			['https://example.com/dir', 'favicon.ico', 'https://example.com/favicon.ico'],
+			['https://example.com/dir/', 'favicon.ico', 'https://example.com/dir/favicon.ico'],
+			['https://example.com/page/', 'https://cdn.example.com', 'https://cdn.example.com'],
+			['https://example.com/page/', 'https://cdn.example.com/x.png', 'https://cdn.example.com/x.png'],
+			['https://example.com/page/', '//cdn.example.com/x', 'https://cdn.example.com/x'],
+			['https://x.com/some-path', 'favicon.ico', 'https://x.com/favicon.ico'],
+			['https://x.com/some-path/', 'favicon.ico', 'https://x.com/some-path/favicon.ico'],
+			['https://x.com/some-path', '/favicon.ico', 'https://x.com/favicon.ico'],
+			['https://x.com/some-path', 'https://apple.com/favicon.ico', 'https://apple.com/favicon.ico'],
 		];
 	}
 
@@ -67,12 +85,11 @@ class UtilsTest extends TestCase
 		);
 	}
 
-	public function test_url_processing(): void
+	#[DataProvider('processUrlProvider')]
+	public function test_url_processing(string $base, string $input, string $expected): void
 	{
-		$this->config->processUrlsWith('https://x.com/some-path');
+		$this->config->processUrlsWith($base);
 
-		assertSame('https://x.com/some-path/favicon.ico', Utils::processUrl('favicon.ico'));
-		assertSame('https://x.com/favicon.ico', Utils::processUrl('/favicon.ico'));
-		assertSame('https://apple.com/favicon.ico', Utils::processUrl('https://apple.com/favicon.ico'));
+		assertSame($expected, Utils::processUrl($input));
 	}
 }
