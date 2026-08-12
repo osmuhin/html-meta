@@ -807,6 +807,7 @@ $meta->openGraph->type === 'website';
 ```
 
 ```php
+// Base URL: https://example.com/ (trailing slash = directory)
 $meta->openGraph->url === 'https://example.com/products';
 ```
 </details>
@@ -1198,7 +1199,7 @@ $icon->height === 14;
 ```
 
 ```php
-$icon->url === 'https://example.com/image.jpg';
+$image->url === 'https://example.com/image.jpg';
 ```
 </details>
 
@@ -1216,7 +1217,7 @@ $icon->url === 'https://example.com/image.jpg';
 ```
 
 ```php
-$icon->secureUrl === 'https://example.com/image.jpg';
+$image->secureUrl === 'https://example.com/image.jpg';
 ```
 </details>
 
@@ -1234,7 +1235,7 @@ $icon->secureUrl === 'https://example.com/image.jpg';
 ```
 
 ```php
-$icon->type === 'image/jpeg';
+$image->type === 'image/jpeg';
 ```
 </details>
 
@@ -1252,7 +1253,7 @@ $icon->type === 'image/jpeg';
 ```
 
 ```php
-$icon->width === 1200;
+$image->width === 1200;
 ```
 </details>
 
@@ -1270,7 +1271,7 @@ $icon->width === 1200;
 ```
 
 ```php
-$icon->height === 630;
+$image->height === 630;
 ```
 </details>
 
@@ -1285,7 +1286,7 @@ $icon->height === 630;
 ```
 
 ```php
-$icon->alt === 'Image description';
+$image->alt === 'Image description';
 ```
 </details>
 
