@@ -226,7 +226,7 @@ class HtmlMetaCrawlerTest extends TestCase
 
 		$crawler = Crawler::init(html: $html);
 
-		$customDistributor = new class($crawler->container) extends TitleDistributor
+		$customDistributor = new class($crawler->context) extends TitleDistributor
 		{
 			public function handle(): void
 			{

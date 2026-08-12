@@ -209,7 +209,7 @@ $crawler->xpath = '//html/head/title';
 $crawler->config->dontUseDefaultDistributorsConfiguration();
 
 $crawler->distributor->useSubDistributors(
-    MyCustomTitleDistributor::init($crawler->container)
+    MyCustomTitleDistributor::init($crawler->context)
 );
 
 $meta = $crawler->run();
@@ -220,16 +220,16 @@ $meta = $crawler->run();
 
 ```php
 $crawler->distributor->useSubDistributors(
-    \Osmuhin\HtmlMeta\Distributors\HtmlDistributor::init(),
-    \Osmuhin\HtmlMeta\Distributors\TitleDistributor::init(),
-    \Osmuhin\HtmlMeta\Distributors\MetaDistributor::init()->useSubDistributors(
-        \Osmuhin\HtmlMeta\Distributors\HttpEquivDistributor::init(),
-        \Osmuhin\HtmlMeta\Distributors\TwitterDistributor::init(),
-        \Osmuhin\HtmlMeta\Distributors\OpenGraphDistributor::init()
+    \Osmuhin\HtmlMeta\Distributors\HtmlDistributor::init($crawler->context),
+    \Osmuhin\HtmlMeta\Distributors\TitleDistributor::init($crawler->context),
+    \Osmuhin\HtmlMeta\Distributors\MetaDistributor::init($crawler->context)->useSubDistributors(
+        \Osmuhin\HtmlMeta\Distributors\HttpEquivDistributor::init($crawler->context),
+        \Osmuhin\HtmlMeta\Distributors\TwitterDistributor::init($crawler->context),
+        \Osmuhin\HtmlMeta\Distributors\OpenGraphDistributor::init($crawler->context)
     ),
-    \Osmuhin\HtmlMeta\Distributors\LinkDistributor::init()->useSubDistributors(
-        \Osmuhin\HtmlMeta\Distributors\LinkRelDistributor::init()->useSubDistributors(
-            \Osmuhin\HtmlMeta\Distributors\FaviconDistributor::init()
+    \Osmuhin\HtmlMeta\Distributors\LinkDistributor::init($crawler->context)->useSubDistributors(
+        \Osmuhin\HtmlMeta\Distributors\LinkRelDistributor::init($crawler->context)->useSubDistributors(
+            \Osmuhin\HtmlMeta\Distributors\FaviconDistributor::init($crawler->context)
         )
     )
 );

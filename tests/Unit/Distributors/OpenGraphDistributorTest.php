@@ -8,17 +8,17 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Tests\Unit\Traits\DataMapperInjector;
 use Tests\Unit\Traits\ElementCreator;
-use Tests\Unit\Traits\SetupContainer;
+use Tests\Unit\Traits\SetupContext;
 
 final class OpenGraphDistributorTest extends TestCase
 {
-	use ElementCreator, SetupContainer, DataMapperInjector;
+	use ElementCreator, SetupContext, DataMapperInjector;
 
 	private OpenGraphDistributor $distributor;
 
 	protected function setUp(): void
 	{
-		$this->distributor = new OpenGraphDistributor();
+		$this->distributor = new OpenGraphDistributor($this->context);
 	}
 
 	public static function metaPropertiesProvider(): array
@@ -79,7 +79,7 @@ final class OpenGraphDistributorTest extends TestCase
 			->with($this->identicalTo('og:title'), $this->identicalTo('value1'))
 			->willReturn(true);
 
-		self::injectDataMapper($this->distributor, $dataMapper);
+		self::injectDataMapper($this->distributor, $dataMapper, OpenGraphDataMapper::class);
 
 		$this->distributor->el = self::makeMetaWithProperty('og:title', 'value1');
 
@@ -97,7 +97,7 @@ final class OpenGraphDistributorTest extends TestCase
 			->with($this->identicalTo($key), $this->identicalTo($content), $this->identicalTo($asNew))
 			->willReturn(true);
 
-		self::injectDataMapper($this->distributor, $dataMapper);
+		self::injectDataMapper($this->distributor, $dataMapper, OpenGraphDataMapper::class);
 
 		$this->distributor->el = self::makeMetaWithProperty($key, $content);
 

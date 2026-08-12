@@ -2,21 +2,12 @@
 
 namespace Osmuhin\HtmlMeta\Distributors;
 
-use Osmuhin\HtmlMeta\DataMappers\AbstractDataMapper;
+use Osmuhin\HtmlMeta\DataMappers\BasicDataMapper;
 
 /** Handles `<link rel="...">` tags such as canonical. */
 class LinkRelDistributor extends AbstractDistributor
 {
 	public string $rel;
-
-	protected AbstractDataMapper $dataMapper;
-
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->dataMapper = new class extends AbstractDataMapper {};
-	}
 
 	public function canHandle(): bool
 	{
@@ -30,9 +21,10 @@ class LinkRelDistributor extends AbstractDistributor
 		}
 
 		if ($this->rel === 'canonical') {
-			$this->dataMapper->assignPropertyWithObject(
+			$mapper = $this->dataMapper(BasicDataMapper::class);
+			$mapper->assignPropertyWithObject(
 				$this->meta,
-				$this->dataMapper->url('canonical'),
+				$mapper->url('canonical'),
 				$href
 			);
 		}

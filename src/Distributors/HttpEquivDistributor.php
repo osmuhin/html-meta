@@ -11,15 +11,6 @@ class HttpEquivDistributor extends AbstractDistributor
 
 	protected string $content;
 
-	protected HttpEquivDataMapper $dataMapper;
-
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->dataMapper = new HttpEquivDataMapper();
-	}
-
 	public function canHandle(): bool
 	{
 		if (!$name = $this->elAttr('http-equiv')) {
@@ -38,7 +29,7 @@ class HttpEquivDistributor extends AbstractDistributor
 
 	public function handle(): void
 	{
-		if ($this->dataMapper->assign($this->name, $this->content)) {
+		if ($this->dataMapper(HttpEquivDataMapper::class)->assign($this->name, $this->content)) {
 			return;
 		}
 

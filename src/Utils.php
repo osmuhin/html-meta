@@ -31,15 +31,12 @@ class Utils
 	}
 
 	/**
-	 * Resolve `$url` against the configured base URL (RFC 3986 via PSR-7 UriResolver).
+	 * Resolve `$url` against `$config` base URL (RFC 3986 via PSR-7 UriResolver).
 	 *
 	 * Returns `$url` unchanged when the base URL is empty.
 	 */
-	public static function processUrl(string $url): string
+	public static function processUrl(string $url, Config $config): string
 	{
-		/** @var \Osmuhin\HtmlMeta\Config $config */
-		$config = ServiceLocator::container()->get(Config::class);
-
 		$base = $config->getBaseUrlString();
 
 		if ($base === '') {

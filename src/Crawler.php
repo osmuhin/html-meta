@@ -20,7 +20,7 @@ class Crawler
 
 	public readonly Config $config;
 
-	public readonly Container $container;
+	public readonly Context $context;
 
 	/** XPath used to select HTML elements that distributors may handle. */
 	public string $xpath = '//html|//html/head/link|//html/head/meta|//html/head/title';
@@ -39,17 +39,8 @@ class Crawler
 	{
 		$this->meta = new Meta();
 		$this->config = new Config();
-
-		ServiceLocator::register(
-			$this->container = $this->makeContainer()
-		);
-
+		$this->context = new Context($this->meta, $this->config);
 		$this->distributor = $this->makeAnonymousDistributor();
-	}
-
-	public function __destruct()
-	{
-		ServiceLocator::destructContainer();
 	}
 
 	/**
@@ -124,9 +115,11 @@ class Crawler
 		return $this->meta;
 	}
 
-	private function makeAnonymousDistributor()
+	private function makeAnonymousDistributor(): Distributor
 	{
-		return new class extends AbstractDistributor {
+		$context = $this->context;
+
+		return new class($context) extends AbstractDistributor {
 			public function canHandle(): bool
 			{
 				return true;
@@ -141,29 +134,22 @@ class Crawler
 
 	private function useDefaultDistributorsConfiguration()
 	{
+		$context = $this->context;
+
 		$this->distributor->useSubDistributors(
-			\Osmuhin\HtmlMeta\Distributors\HtmlDistributor::init(),
-			\Osmuhin\HtmlMeta\Distributors\TitleDistributor::init(),
-			\Osmuhin\HtmlMeta\Distributors\MetaDistributor::init()->useSubDistributors(
-				\Osmuhin\HtmlMeta\Distributors\HttpEquivDistributor::init(),
-				\Osmuhin\HtmlMeta\Distributors\TwitterDistributor::init(),
-				\Osmuhin\HtmlMeta\Distributors\OpenGraphDistributor::init()
+			\Osmuhin\HtmlMeta\Distributors\HtmlDistributor::init($context),
+			\Osmuhin\HtmlMeta\Distributors\TitleDistributor::init($context),
+			\Osmuhin\HtmlMeta\Distributors\MetaDistributor::init($context)->useSubDistributors(
+				\Osmuhin\HtmlMeta\Distributors\HttpEquivDistributor::init($context),
+				\Osmuhin\HtmlMeta\Distributors\TwitterDistributor::init($context),
+				\Osmuhin\HtmlMeta\Distributors\OpenGraphDistributor::init($context)
 			),
-			\Osmuhin\HtmlMeta\Distributors\LinkDistributor::init()->useSubDistributors(
-				\Osmuhin\HtmlMeta\Distributors\LinkRelDistributor::init()->useSubDistributors(
-					\Osmuhin\HtmlMeta\Distributors\FaviconDistributor::init()
+			\Osmuhin\HtmlMeta\Distributors\LinkDistributor::init($context)->useSubDistributors(
+				\Osmuhin\HtmlMeta\Distributors\LinkRelDistributor::init($context)->useSubDistributors(
+					\Osmuhin\HtmlMeta\Distributors\FaviconDistributor::init($context)
 				)
 			)
 		);
-	}
-
-	private function makeContainer(): Container
-	{
-		$container = new Container();
-		$container->bind(Meta::class, $this->meta);
-		$container->bind(Config::class, $this->config);
-
-		return $container;
 	}
 
 	private function makeGuzzleClient(): GuzzleClient

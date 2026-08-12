@@ -4,11 +4,11 @@ namespace Osmuhin\HtmlMeta\Distributors;
 
 use InvalidArgumentException;
 use Osmuhin\HtmlMeta\Config;
-use Osmuhin\HtmlMeta\Container;
+use Osmuhin\HtmlMeta\Context;
+use Osmuhin\HtmlMeta\Contracts\DataMapper;
 use Osmuhin\HtmlMeta\Contracts\Distributor;
 use Osmuhin\HtmlMeta\Dto\Meta;
 use Osmuhin\HtmlMeta\Element;
-use Osmuhin\HtmlMeta\ServiceLocator;
 
 /**
  * Base distributor with sub-distributor tree polling and element attribute helpers.
@@ -17,7 +17,7 @@ abstract class AbstractDistributor implements Distributor
 {
 	public Element $el;
 
-	protected Container $container;
+	protected Context $context;
 
 	protected Config $config;
 
@@ -26,23 +26,24 @@ abstract class AbstractDistributor implements Distributor
 	/** @var \Osmuhin\HtmlMeta\Distributors\AbstractDistributor[] */
 	private array $subDistributors = [];
 
-	public function __construct(?Container $container = null)
+	/** @var array<class-string<DataMapper>, DataMapper> */
+	private array $dataMappers = [];
+
+	public function __construct(Context $context)
 	{
-		$this->container = $container ?: ServiceLocator::container();
-		$this->meta = $this->container->get(Meta::class);
-		$this->config = $this->container->get(Config::class);
+		$this->context = $context;
+		$this->meta = $context->meta;
+		$this->config = $context->config;
 	}
 
-	public static function init(?Container $container = null): self
+	public static function init(Context $context): self
 	{
-		return new static($container);
+		return new static($context);
 	}
 
 	public function useSubDistributors(...$args): self
 	{
-		$distributors = $args;
-
-		foreach ($distributors as $distributor) {
+		foreach ($args as $distributor) {
 			$this->setSubDistributor($distributor);
 		}
 
@@ -50,11 +51,23 @@ abstract class AbstractDistributor implements Distributor
 	}
 
 	/**
-	 * @throws \InvalidArgumentException
+	 * @template T of DataMapper
+	 *
+	 * @param class-string<T> $class
+	 *
+	 * @return T
+	 */
+	protected function dataMapper(string $class): DataMapper
+	{
+		return $this->dataMappers[$class] ??= new $class($this->context);
+	}
+
+	/**
+	 * @throws InvalidArgumentException
 	 */
 	public function setSubDistributor(Distributor|string $distributor, ?string $key = null): self
 	{
-		$distributor = is_string($distributor) ? new $distributor($this->container) : $distributor;
+		$distributor = is_string($distributor) ? new $distributor($this->context) : $distributor;
 
 		if (!($distributor instanceof Distributor)) {
 			$class = $distributor::class;

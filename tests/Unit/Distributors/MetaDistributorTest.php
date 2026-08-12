@@ -7,7 +7,7 @@ use Osmuhin\HtmlMeta\Distributors\MetaDistributor;
 use PHPUnit\Framework\TestCase;
 use Tests\Unit\Traits\DataMapperInjector;
 use Tests\Unit\Traits\ElementCreator;
-use Tests\Unit\Traits\SetupContainer;
+use Tests\Unit\Traits\SetupContext;
 
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNull;
@@ -15,13 +15,13 @@ use function PHPUnit\Framework\assertSame;
 
 final class MetaDistributorTest extends TestCase
 {
-	use ElementCreator, SetupContainer, DataMapperInjector;
+	use ElementCreator, SetupContext, DataMapperInjector;
 
 	private MetaDistributor $distributor;
 
 	protected function setUp(): void
 	{
-		$this->distributor = new MetaDistributor();
+		$this->distributor = new MetaDistributor($this->context);
 	}
 
 	public function test_can_handle_method(): void
@@ -45,7 +45,7 @@ final class MetaDistributorTest extends TestCase
 			->with($this->identicalTo('viewport'), $this->identicalTo('user-scalable=no, width=device-width, initial-scale=1.0'))
 			->willReturn(true);
 
-		self::injectDataMapper($this->distributor, $dataMapper);
+		self::injectDataMapper($this->distributor, $dataMapper, MetaDataMapper::class);
 
 		$this->distributor->el = self::makeNamedMetaElement('viewport', 'user-scalable=no, width=device-width, initial-scale=1.0');
 		$this->distributor->handle();
@@ -63,7 +63,7 @@ final class MetaDistributorTest extends TestCase
 	{
 		$dataMapper = self::createMock(MetaDataMapper::class);
 		$dataMapper->expects($this->never())->method('assign');
-		self::injectDataMapper($this->distributor, $dataMapper);
+		self::injectDataMapper($this->distributor, $dataMapper, MetaDataMapper::class);
 
 		$this->distributor->el = self::makeNamedMetaElement('viewport', "  \n   ");
 		$this->distributor->handle();

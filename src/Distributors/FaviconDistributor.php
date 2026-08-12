@@ -2,7 +2,7 @@
 
 namespace Osmuhin\HtmlMeta\Distributors;
 
-use Osmuhin\HtmlMeta\DataMappers\AbstractDataMapper;
+use Osmuhin\HtmlMeta\DataMappers\BasicDataMapper;
 use Osmuhin\HtmlMeta\Dto\Icon;
 use Osmuhin\HtmlMeta\Utils;
 
@@ -12,15 +12,6 @@ class FaviconDistributor extends AbstractDistributor
 	protected ?string $rel;
 
 	protected string $href;
-
-	protected AbstractDataMapper $dataMapper;
-
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->dataMapper = new class extends AbstractDataMapper {};
-	}
 
 	public function canHandle(): bool
 	{
@@ -41,32 +32,34 @@ class FaviconDistributor extends AbstractDistributor
 			return;
 		}
 
+		$mapper = $this->dataMapper(BasicDataMapper::class);
+
 		switch ($this->rel) {
 			case 'shortcut icon':
 			case 'icon':
-				$this->meta->favicon->icons[] = $this->makeIcon();
+				$this->meta->favicon->icons[] = $this->makeIcon($mapper);
 				break;
 			case 'apple-touch-icon':
-				$this->meta->favicon->appleTouchIcons[] = $this->makeIcon();
+				$this->meta->favicon->appleTouchIcons[] = $this->makeIcon($mapper);
 				break;
 			case 'manifest':
-				$this->dataMapper->assignPropertyWithObject(
+				$mapper->assignPropertyWithObject(
 					$this->meta->favicon,
-					$this->dataMapper->url('manifest'),
+					$mapper->url('manifest'),
 					$this->href
 				);
 				break;
 		}
 	}
 
-	protected function makeIcon(): Icon
+	protected function makeIcon(BasicDataMapper $mapper): Icon
 	{
 		$icon = new Icon();
 		$icon->extension = Utils::guessExtension($this->href);
 
-		$this->dataMapper->assignPropertyWithObject(
+		$mapper->assignPropertyWithObject(
 			$icon,
-			$this->dataMapper->url('url'),
+			$mapper->url('url'),
 			$this->href
 		);
 
@@ -74,15 +67,15 @@ class FaviconDistributor extends AbstractDistributor
 			$explodedSizes = explode('x', $icon->sizes);
 
 			if (\count($explodedSizes) === 2) {
-				$this->dataMapper->assignPropertyWithObject(
+				$mapper->assignPropertyWithObject(
 					$icon,
-					$this->dataMapper->int('width'),
+					$mapper->int('width'),
 					$explodedSizes[0]
 				);
 
-				$this->dataMapper->assignPropertyWithObject(
+				$mapper->assignPropertyWithObject(
 					$icon,
-					$this->dataMapper->int('height'),
+					$mapper->int('height'),
 					$explodedSizes[1]
 				);
 			}

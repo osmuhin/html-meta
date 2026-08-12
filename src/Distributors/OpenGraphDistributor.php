@@ -15,25 +15,10 @@ class OpenGraphDistributor extends AbstractDistributor
 
 	protected string $namespace;
 
-	protected OpenGraphDataMapper $dataMapper;
-
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->dataMapper = new OpenGraphDataMapper();
-	}
-
 	protected static function getMethodsMap(): array
 	{
 		return [
 			'og' => 'setOg',
-			// 'image' => 'setImage',
-			// 'music' => 'setMusic',
-			// 'video' => 'setVideo',
-			// 'article' => 'setArticle',
-			// 'book' => 'setBook',
-			// 'profile' => 'setProfile'
 		];
 	}
 
@@ -68,12 +53,14 @@ class OpenGraphDistributor extends AbstractDistributor
 
 	protected function setOg(string $property, string $content): void
 	{
-		if ($this->dataMapper->assign($property, $content)) {
+		$mapper = $this->dataMapper(OpenGraphDataMapper::class);
+
+		if ($mapper->assign($property, $content)) {
 			return;
 		}
 
 		if (str_starts_with($property, 'og:image')) {
-			$this->dataMapper->assignImage(
+			$mapper->assignImage(
 				key: $property,
 				content: $content,
 				asNew: str_ends_with($property, 'image') || str_ends_with($property, 'image:url')
@@ -89,7 +76,7 @@ class OpenGraphDistributor extends AbstractDistributor
 		}
 
 		if (str_starts_with($property, 'og:video')) {
-			$this->dataMapper->assignVideo(
+			$mapper->assignVideo(
 				key: $property,
 				content: $content,
 				asNew: str_ends_with($property, 'video') || str_ends_with($property, 'video:url')
@@ -99,7 +86,7 @@ class OpenGraphDistributor extends AbstractDistributor
 		}
 
 		if (str_starts_with($property, 'og:audio')) {
-			$this->dataMapper->assignAudio(
+			$mapper->assignAudio(
 				key: $property,
 				content: $content,
 				asNew: str_ends_with($property, 'audio') || str_ends_with($property, 'audio:url')

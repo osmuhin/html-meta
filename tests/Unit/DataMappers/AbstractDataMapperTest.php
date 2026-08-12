@@ -2,11 +2,12 @@
 
 namespace Tests\Unit\DataMappers;
 
+use Osmuhin\HtmlMeta\Context;
 use Osmuhin\HtmlMeta\DataMappers\AbstractDataMapper;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use Tests\Unit\Traits\SetupContainer;
+use Tests\Unit\Traits\SetupContext;
 
 use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertSame;
@@ -14,7 +15,7 @@ use function PHPUnit\Framework\assertTrue;
 
 final class AbstractDataMapperTest extends TestCase
 {
-	use SetupContainer;
+	use SetupContext;
 
 	public static function providerForTestingOfIntConversions(): array
 	{
@@ -35,9 +36,17 @@ final class AbstractDataMapperTest extends TestCase
 		];
 	}
 
+	private function makeDataMapper(array $onlyMethods = []): AbstractDataMapper
+	{
+		return $this->getMockBuilder(AbstractDataMapper::class)
+			->setConstructorArgs([$this->context])
+			->onlyMethods($onlyMethods)
+			->getMock();
+	}
+
 	public function test_assigning_property_with_object()
 	{
-		$dataMapper = $this->createPartialMock(AbstractDataMapper::class, []);
+		$dataMapper = $this->makeDataMapper();
 
 		$object = new stdClass();
 		$object->someProp = null;
@@ -57,7 +66,7 @@ final class AbstractDataMapperTest extends TestCase
 
 	public function test_assigning_according_to_map(): void
 	{
-		$dataMapper = $this->createPartialMock(AbstractDataMapper::class, ['assignPropertyWithObject']);
+		$dataMapper = $this->makeDataMapper(['assignPropertyWithObject']);
 
 		$map = ['key1' => 'property1'];
 
@@ -87,9 +96,7 @@ final class AbstractDataMapperTest extends TestCase
 	{
 		$this->config->dontUseTypeConversions(!$useTypeConversions);
 
-		$dataMapper = $this->getMockBuilder(AbstractDataMapper::class)
-			->onlyMethods(['assignPropertyWithObject'])
-			->getMock();
+		$dataMapper = $this->makeDataMapper(['assignPropertyWithObject']);
 
 		$dataMapper
 			->expects($this->once())
@@ -109,9 +116,7 @@ final class AbstractDataMapperTest extends TestCase
 		$this->config->processUrlsWith('http://example.com/api/');
 		$this->config->dontProcessUrls(!$useUrlProcessing);
 
-		$dataMapper = $this->getMockBuilder(AbstractDataMapper::class)
-			->onlyMethods(['assignPropertyWithObject'])
-			->getMock();
+		$dataMapper = $this->makeDataMapper(['assignPropertyWithObject']);
 
 		$dataMapper
 			->expects($this->once())
@@ -127,7 +132,12 @@ final class AbstractDataMapperTest extends TestCase
 
 	public function test_force_overwriting(): void
 	{
-		$dataMapper = new class extends AbstractDataMapper {};
+		$dataMapper = new class($this->context) extends AbstractDataMapper {
+			public function __construct(Context $context)
+			{
+				parent::__construct($context);
+			}
+		};
 
 		$object = new stdClass();
 		$object->property = 123;
@@ -139,7 +149,7 @@ final class AbstractDataMapperTest extends TestCase
 
 	public function test_mime_type_guessing(): void
 	{
-		$dataMapper = $this->createPartialMock(AbstractDataMapper::class, []);
+		$dataMapper = $this->makeDataMapper();
 
 		$object = new stdClass();
 		$object->property = null;

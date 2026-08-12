@@ -5,14 +5,14 @@ namespace Tests\Unit;
 use Osmuhin\HtmlMeta\Utils;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Tests\Unit\Traits\SetupContainer;
+use Tests\Unit\Traits\SetupContext;
 
 use function PHPUnit\Framework\assertNull;
 use function PHPUnit\Framework\assertSame;
 
 class UtilsTest extends TestCase
 {
-	use SetupContainer;
+	use SetupContext;
 
 	public static function pathsProvider(): array
 	{
@@ -90,6 +90,6 @@ class UtilsTest extends TestCase
 	{
 		$this->config->processUrlsWith($base);
 
-		assertSame($expected, Utils::processUrl($input));
+		assertSame($expected, Utils::processUrl($input, $this->config));
 	}
 }

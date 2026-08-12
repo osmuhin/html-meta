@@ -14,7 +14,7 @@ use Tests\Unit\Fixtures\Distributors\SubDistributor1;
 use Tests\Unit\Fixtures\Distributors\SubDistributor2;
 use Tests\Unit\Fixtures\Distributors\SubDistributor3;
 use Tests\Unit\Traits\ElementCreator;
-use Tests\Unit\Traits\SetupContainer;
+use Tests\Unit\Traits\SetupContext;
 
 use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertInstanceOf;
@@ -24,13 +24,15 @@ use function PHPUnit\Framework\assertTrue;
 
 final class AbstractDistributorTest extends TestCase
 {
-	use ElementCreator, MockeryPHPUnitIntegration, SetupContainer;
+	use ElementCreator, MockeryPHPUnitIntegration, SetupContext;
 
 	private AbstractDistributor $distributor;
 
 	protected function setUp(): void
 	{
-		$this->distributor = new class extends AbstractDistributor {
+		$context = $this->context;
+
+		$this->distributor = new class($context) extends AbstractDistributor {
 			public function canHandle(): bool
 			{
 				return true;
@@ -45,7 +47,7 @@ final class AbstractDistributorTest extends TestCase
 
 	public function test_init(): void
 	{
-		$distributor = $this->distributor::init();
+		$distributor = $this->distributor::init($this->context);
 
 		assertInstanceOf(AbstractDistributor::class, $distributor);
 	}
@@ -64,8 +66,8 @@ final class AbstractDistributorTest extends TestCase
 
 	public function test_can_set_and_get_sub_distributor(): void
 	{
-		$subDistributor1 = SubDistributor1::init();
-		$subDistributor2 = SubDistributor2::init();
+		$subDistributor1 = SubDistributor1::init($this->context);
+		$subDistributor2 = SubDistributor2::init($this->context);
 
 		$this->distributor->setSubDistributor($subDistributor1, 'someKey');
 
@@ -80,9 +82,9 @@ final class AbstractDistributorTest extends TestCase
 	public function test_can_set_multiple_sub_distributors(): void
 	{
 		$this->distributor->useSubDistributors(
-			$sd1 = SubDistributor1::init(),
-			$sd2 = SubDistributor2::init()->useSubDistributors(
-				$sd3 = SubDistributor3::init(),
+			$sd1 = SubDistributor1::init($this->context),
+			$sd2 = SubDistributor2::init($this->context)->useSubDistributors(
+				$sd3 = SubDistributor3::init($this->context),
 			)
 		);
 

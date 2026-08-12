@@ -11,15 +11,6 @@ class TwitterDistributor extends AbstractDistributor
 
 	protected string $content;
 
-	protected TwitterDataMapper $dataMapper;
-
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->dataMapper = new TwitterDataMapper();
-	}
-
 	public function canHandle(): bool
 	{
 		$name = $this->elAttr('name') ?: $this->elAttr('property');
@@ -40,7 +31,7 @@ class TwitterDistributor extends AbstractDistributor
 
 	public function handle(): void
 	{
-		if ($this->dataMapper->assign($this->name, $this->content)) {
+		if ($this->dataMapper(TwitterDataMapper::class)->assign($this->name, $this->content)) {
 			return;
 		}
 

@@ -2,12 +2,14 @@
 
 namespace Osmuhin\HtmlMeta\Contracts;
 
+use Osmuhin\HtmlMeta\Context;
+
 /**
  * Validates an HTML element and writes matching data into Meta DTOs.
  */
 interface Distributor
 {
-	public static function init(): self;
+	public static function init(Context $context): self;
 
 	/**
 	 * @param \Osmuhin\HtmlMeta\Contracts\Distributor|string ...$args
@@ -18,12 +20,7 @@ interface Distributor
 
 	public function getSubDistributor(string $class): self|null;
 
-	/**
-	 * Whether this distributor can handle the current element.
-	 * When true, sub-distributors are polled, then {@see handle()} is called if none claimed the element further.
-	 */
 	public function canHandle(): bool;
 
-	/** Distribute the current element's data into DTOs. */
 	public function handle(): void;
 }

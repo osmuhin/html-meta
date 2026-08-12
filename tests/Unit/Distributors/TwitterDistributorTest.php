@@ -7,20 +7,20 @@ use Osmuhin\HtmlMeta\Distributors\TwitterDistributor;
 use PHPUnit\Framework\TestCase;
 use Tests\Unit\Traits\DataMapperInjector;
 use Tests\Unit\Traits\ElementCreator;
-use Tests\Unit\Traits\SetupContainer;
+use Tests\Unit\Traits\SetupContext;
 
 use function PHPUnit\Framework\assertEmpty;
 use function PHPUnit\Framework\assertSame;
 
 final class TwitterDistributorTest extends TestCase
 {
-	use ElementCreator, SetupContainer, DataMapperInjector;
+	use ElementCreator, SetupContext, DataMapperInjector;
 
 	private TwitterDistributor $distributor;
 
 	protected function setUp(): void
 	{
-		$this->distributor = new TwitterDistributor();
+		$this->distributor = new TwitterDistributor($this->context);
 	}
 
 	public function test_can_handle_method(): void
@@ -59,7 +59,7 @@ final class TwitterDistributorTest extends TestCase
 			->with($this->identicalTo('twitter:card'), $this->identicalTo('summary_large_image'))
 			->willReturn(true);
 
-		self::injectDataMapper($this->distributor, $dataMapper);
+		self::injectDataMapper($this->distributor, $dataMapper, TwitterDataMapper::class);
 
 		$this->distributor->el = self::makeMetaWithProperty('twitter:card', 'summary_large_image');
 
@@ -78,7 +78,7 @@ final class TwitterDistributorTest extends TestCase
 			->with($this->identicalTo('twitter:app:id:iphone', '123456789'))
 			->willReturn(false);
 
-		self::injectDataMapper($this->distributor, $dataMapper);
+		self::injectDataMapper($this->distributor, $dataMapper, TwitterDataMapper::class);
 
 		$this->distributor->el = self::makeMetaWithProperty('twitter:app:id:iphone', '123456789');
 

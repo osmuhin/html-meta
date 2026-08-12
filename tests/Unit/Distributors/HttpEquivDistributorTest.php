@@ -8,20 +8,20 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Tests\Unit\Traits\DataMapperInjector;
 use Tests\Unit\Traits\ElementCreator;
-use Tests\Unit\Traits\SetupContainer;
+use Tests\Unit\Traits\SetupContext;
 
 use function PHPUnit\Framework\assertEmpty;
 use function PHPUnit\Framework\assertSame;
 
 final class HttpEquivDistributorTest extends TestCase
 {
-	use ElementCreator, SetupContainer, DataMapperInjector;
+	use ElementCreator, SetupContext, DataMapperInjector;
 
 	private HttpEquivDistributor $distributor;
 
 	protected function setUp(): void
 	{
-		$this->distributor = new HttpEquivDistributor();
+		$this->distributor = new HttpEquivDistributor($this->context);
 	}
 
 	public static function metaPropertiesProvider(): array
@@ -54,7 +54,7 @@ final class HttpEquivDistributorTest extends TestCase
 			->with($this->identicalTo('http-equiv-property'), $this->identicalTo('value1'))
 			->willReturn(true);
 
-		self::injectDataMapper($this->distributor, $dataMapper);
+		self::injectDataMapper($this->distributor, $dataMapper, HttpEquivDataMapper::class);
 
 		$this->distributor->el = self::makeMetaElement(['http-equiv' => 'http-equiv-property', 'content' => 'value1']);
 
@@ -73,7 +73,7 @@ final class HttpEquivDistributorTest extends TestCase
 			->with($this->identicalTo('http-equiv-property', 'value2'))
 			->willReturn(false);
 
-		self::injectDataMapper($this->distributor, $dataMapper);
+		self::injectDataMapper($this->distributor, $dataMapper, HttpEquivDataMapper::class);
 
 		$this->distributor->el = self::makeMetaElement(['http-equiv' => 'http-equiv-property', 'content' => 'value2']);
 

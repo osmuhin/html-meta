@@ -3,10 +3,9 @@
 namespace Osmuhin\HtmlMeta\DataMappers;
 
 use Osmuhin\HtmlMeta\Config;
-use Osmuhin\HtmlMeta\Container;
+use Osmuhin\HtmlMeta\Context;
 use Osmuhin\HtmlMeta\Contracts\DataMapper;
 use Osmuhin\HtmlMeta\Dto\Meta;
-use Osmuhin\HtmlMeta\ServiceLocator;
 use Osmuhin\HtmlMeta\Utils;
 
 /**
@@ -18,12 +17,10 @@ abstract class AbstractDataMapper implements DataMapper
 
 	protected Config $config;
 
-	public function __construct(?Container $container = null)
+	public function __construct(Context $context)
 	{
-		$container ??= ServiceLocator::container();
-
-		$this->meta = $container->get(Meta::class);
-		$this->config = $container->get(Config::class);
+		$this->meta = $context->meta;
+		$this->config = $context->config;
 	}
 
 	public function assignAccordingToTheMap(array $map, object $object, string $name, string $content): bool
@@ -61,7 +58,7 @@ abstract class AbstractDataMapper implements DataMapper
 	{
 		return function (string $value, object $object) use ($property) {
 			if ($this->config->shouldProcessUrls()) {
-				$value = Utils::processUrl($value);
+				$value = Utils::processUrl($value, $this->config);
 			}
 
 			$this->assignPropertyWithObject($object, $property, $value);

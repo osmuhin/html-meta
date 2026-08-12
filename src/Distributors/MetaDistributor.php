@@ -7,15 +7,6 @@ use Osmuhin\HtmlMeta\DataMappers\MetaDataMapper;
 /** Handles `<meta>` tags and delegates http-equiv, Twitter, and Open Graph to sub-distributors. */
 class MetaDistributor extends AbstractDistributor
 {
-	protected MetaDataMapper $dataMapper;
-
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->dataMapper = new MetaDataMapper();
-	}
-
 	public function canHandle(): bool
 	{
 		return $this->el->name === 'meta' && $this->el->attributes;
@@ -46,7 +37,7 @@ class MetaDistributor extends AbstractDistributor
 			return;
 		}
 
-		if ($this->dataMapper->assign($name, $content)) {
+		if ($this->dataMapper(MetaDataMapper::class)->assign($name, $content)) {
 			return;
 		}
 

@@ -7,7 +7,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use Tests\Unit\Traits\ElementCreator;
-use Tests\Unit\Traits\SetupContainer;
+use Tests\Unit\Traits\SetupContext;
 
 use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertSame;
@@ -15,13 +15,13 @@ use function PHPUnit\Framework\assertTrue;
 
 final class LinkRelDistributorTest extends TestCase
 {
-	use ElementCreator, SetupContainer;
+	use ElementCreator, SetupContext;
 
 	private LinkRelDistributor $distributor;
 
 	protected function setUp(): void
 	{
-		$this->distributor = new LinkRelDistributor();
+		$this->distributor = new LinkRelDistributor($this->context);
 	}
 
 	#[Test]

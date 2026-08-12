@@ -7,17 +7,17 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use Tests\Unit\Traits\ElementCreator;
-use Tests\Unit\Traits\SetupContainer;
+use Tests\Unit\Traits\SetupContext;
 
 final class HtmlDistributorTest extends TestCase
 {
-	use ElementCreator, SetupContainer;
+	use ElementCreator, SetupContext;
 
 	private HtmlDistributor $distributor;
 
 	protected function setUp(): void
 	{
-		$this->distributor = new HtmlDistributor();
+		$this->distributor = new HtmlDistributor($this->context);
 	}
 
 	#[Test]
