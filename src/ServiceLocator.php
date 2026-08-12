@@ -4,12 +4,20 @@ namespace Osmuhin\HtmlMeta;
 
 use RuntimeException;
 
+/**
+ * @internal Resolves the Container associated with the current Crawler via call stack.
+ *
+ * Prefer passing Container explicitly when constructing distributors outside the default flow.
+ */
 class ServiceLocator
 {
 	private static array $containers = [];
 
 	private static int $count = 0;
 
+	/**
+	 * @throws RuntimeException When no container can be resolved for the caller
+	 */
 	public static function container(): Container
 	{
 		if (self::$count === 1) {
@@ -23,6 +31,7 @@ class ServiceLocator
 		return self::$containers[$class][$objectId];
 	}
 
+	/** Register a container for the calling object (typically Crawler). */
 	public static function register(Container $container): void
 	{
 		$trace = debug_backtrace();
@@ -38,6 +47,11 @@ class ServiceLocator
 		self::$count++;
 	}
 
+	/**
+	 * Unregister the container for the calling object.
+	 *
+	 * @throws RuntimeException When no matching container is found
+	 */
 	public static function destructContainer(): void
 	{
 		[$class, $objectId] = self::getContainerCredentials(

@@ -6,6 +6,7 @@ use Osmuhin\HtmlMeta\DataMappers\AbstractDataMapper;
 use Osmuhin\HtmlMeta\Dto\Icon;
 use Osmuhin\HtmlMeta\Utils;
 
+/** Handles favicon, apple-touch-icon, and web manifest link tags. */
 class FaviconDistributor extends AbstractDistributor
 {
 	protected ?string $rel;

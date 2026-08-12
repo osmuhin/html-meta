@@ -4,6 +4,7 @@ namespace Osmuhin\HtmlMeta\Distributors;
 
 use Osmuhin\HtmlMeta\DataMappers\TwitterDataMapper;
 
+/** Handles Twitter Card `name="twitter:*"` (or property) meta tags. */
 class TwitterDistributor extends AbstractDistributor
 {
 	protected string $name;

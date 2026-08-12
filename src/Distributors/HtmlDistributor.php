@@ -2,6 +2,7 @@
 
 namespace Osmuhin\HtmlMeta\Distributors;
 
+/** Handles the root `<html>` element (lang, dir, attributes). */
 class HtmlDistributor extends AbstractDistributor
 {
 	public function canHandle(): bool

@@ -4,10 +4,14 @@ namespace Osmuhin\HtmlMeta;
 
 use DOMNode;
 
+/**
+ * Normalized snapshot of a DOM node for distributors (tag name, attributes, text).
+ */
 class Element
 {
 	public string $name;
 
+	/** @var array<string, string|null> */
 	public array $attributes = [];
 
 	public ?string $innerText = null;

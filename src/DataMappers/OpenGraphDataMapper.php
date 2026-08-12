@@ -7,6 +7,8 @@ use Osmuhin\HtmlMeta\Dto\OpenGraph\Image;
 use Osmuhin\HtmlMeta\Dto\OpenGraph\Video;
 
 /**
+ * Maps Open Graph properties onto OpenGraph DTOs (including image/video/audio objects).
+ *
  * @codeCoverageIgnore
  */
 class OpenGraphDataMapper extends AbstractDataMapper

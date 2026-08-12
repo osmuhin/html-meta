@@ -4,6 +4,7 @@ namespace Osmuhin\HtmlMeta\Dto\OpenGraph;
 
 use Osmuhin\HtmlMeta\Contracts\Dto;
 
+/** Open Graph audio object (`og:audio` and related properties). */
 class Audio implements Dto
 {
 	public ?string $url = null;

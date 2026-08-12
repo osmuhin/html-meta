@@ -4,6 +4,7 @@ namespace Osmuhin\HtmlMeta\Dto\OpenGraph;
 
 use Osmuhin\HtmlMeta\Contracts\Dto;
 
+/** Open Graph video object (`og:video` and related properties). */
 class Video implements Dto
 {
 	public ?string $url = null;

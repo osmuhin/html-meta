@@ -9,6 +9,9 @@ use Osmuhin\HtmlMeta\Dto\Meta;
 use Osmuhin\HtmlMeta\ServiceLocator;
 use Osmuhin\HtmlMeta\Utils;
 
+/**
+ * Shared mapping helpers for assigning attribute values onto DTO properties.
+ */
 abstract class AbstractDataMapper implements DataMapper
 {
 	protected Meta $meta;

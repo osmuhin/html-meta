@@ -26,14 +26,12 @@ class ServiceLocatorTest extends TestCase
 	public function setUpCountProperty(): void
 	{
 		$this->count = new ReflectionProperty(ServiceLocator::class, 'count');
-		$this->count->setAccessible(true);
 	}
 
 	#[Before]
 	public function setUpContainersProperty(): void
 	{
 		$this->containers = new ReflectionProperty(ServiceLocator::class, 'containers');
-		$this->containers->setAccessible(true);
 	}
 
 	#[After]

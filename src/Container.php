@@ -4,19 +4,25 @@ namespace Osmuhin\HtmlMeta;
 
 use InvalidArgumentException;
 
+/**
+ * Minimal service container for binding Config, Meta, and related instances per crawler.
+ */
 class Container
 {
 	private array $bindings = [];
 
 	private array $instances = [];
 
+	/** Register a concrete instance or factory callable under `$key`. */
 	public function bind(string $key, callable|object $value): void
 	{
 		$this->bindings[$key] = $value;
 	}
 
 	/**
-	 * @throws \InvalidArgumentException
+	 * Resolve a binding, caching the result for subsequent calls.
+	 *
+	 * @throws InvalidArgumentException When no binding exists for `$key`
 	 */
 	public function get(string $key)
 	{

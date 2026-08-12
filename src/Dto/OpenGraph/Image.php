@@ -4,6 +4,7 @@ namespace Osmuhin\HtmlMeta\Dto\OpenGraph;
 
 use Osmuhin\HtmlMeta\Contracts\Dto;
 
+/** Open Graph image object (`og:image` and related properties). */
 class Image implements Dto
 {
 	public ?string $url = null;

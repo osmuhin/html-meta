@@ -4,23 +4,10 @@ namespace Osmuhin\HtmlMeta\Distributors;
 
 use Osmuhin\HtmlMeta\DataMappers\MetaDataMapper;
 
+/** Handles `<meta>` tags and delegates http-equiv, Twitter, and Open Graph to sub-distributors. */
 class MetaDistributor extends AbstractDistributor
 {
 	protected MetaDataMapper $dataMapper;
-
-	/**
-	 * For testing purposes only
-	 *
-	 * @see \tests\Unit\Distributors\MetaDistributorTest
-	 */
-	private bool $testEmptyContent = false;
-
-	/**
-	 * For testing purposes only
-	 *
-	 * @see \tests\Unit\Distributors\MetaDistributorTest
-	 */
-	private bool $testAssignment = false;
 
 	public function __construct()
 	{
@@ -56,14 +43,10 @@ class MetaDistributor extends AbstractDistributor
 	protected function handleNamedMeta(string $name): void
 	{
 		if (!$content = $this->elAttr('content', lowercase: false)) {
-			$this->testEmptyContent = true;
-
 			return;
 		}
 
 		if ($this->dataMapper->assign($name, $content)) {
-			$this->testAssignment = true;
-
 			return;
 		}
 

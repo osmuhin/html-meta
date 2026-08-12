@@ -13,7 +13,6 @@ trait DataMapperInjector
 		$reflection = new ReflectionClass($distributor);
 
 		$property = $reflection->getProperty('dataMapper');
-		$property->setAccessible(true);
 		$property->setValue($distributor, $dataMapper);
 	}
 }

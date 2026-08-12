@@ -71,6 +71,20 @@ $request = new \GuzzleHttp\Psr7\Request('GET', 'https://google.com');
 $meta = Crawler::init(request: $request)->run();
 ```
 
+> [!WARNING]
+> When crawling URLs from untrusted input, be aware of SSRF risks (the crawler follows redirects by default). Prefer injecting a hardened Guzzle client via `setGuzzleClient()` (timeouts, allowlists, disabled private networks) instead of passing raw user URLs to `Crawler::init(url: ...)`.
+
+```php
+$client = new \GuzzleHttp\Client([
+    'timeout' => 5,
+    'allow_redirects' => false,
+]);
+
+$meta = Crawler::init(url: 'https://example.com')
+    ->setGuzzleClient($client)
+    ->run();
+```
+
 All properties of the `meta` object are described [**here**](/docs/meta-object-properties.md).
 
 ## Configuration

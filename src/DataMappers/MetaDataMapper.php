@@ -3,6 +3,8 @@
 namespace Osmuhin\HtmlMeta\DataMappers;
 
 /**
+ * Maps named `<meta name="...">` attributes onto Meta DTO fields.
+ *
  * @codeCoverageIgnore
  */
 class MetaDataMapper extends AbstractDataMapper

@@ -2,6 +2,7 @@
 
 namespace Osmuhin\HtmlMeta\Distributors;
 
+/** Handles the HTML `<title>` element. */
 class TitleDistributor extends AbstractDistributor
 {
 	public function canHandle(): bool

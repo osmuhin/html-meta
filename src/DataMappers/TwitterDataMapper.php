@@ -3,6 +3,8 @@
 namespace Osmuhin\HtmlMeta\DataMappers;
 
 /**
+ * Maps Twitter Card meta tags onto the Twitter DTO.
+ *
  * @codeCoverageIgnore
  */
 class TwitterDataMapper extends AbstractDataMapper

@@ -3,6 +3,8 @@
 namespace Osmuhin\HtmlMeta\DataMappers;
 
 /**
+ * Maps http-equiv meta tags onto the HttpEquiv DTO.
+ *
  * @codeCoverageIgnore
  */
 class HttpEquivDataMapper extends AbstractDataMapper

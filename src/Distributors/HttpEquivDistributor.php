@@ -4,6 +4,7 @@ namespace Osmuhin\HtmlMeta\Distributors;
 
 use Osmuhin\HtmlMeta\DataMappers\HttpEquivDataMapper;
 
+/** Handles `<meta http-equiv="...">` tags. */
 class HttpEquivDistributor extends AbstractDistributor
 {
 	protected string $name;

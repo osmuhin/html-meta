@@ -10,6 +10,9 @@ use Osmuhin\HtmlMeta\Dto\Meta;
 use Osmuhin\HtmlMeta\Element;
 use Osmuhin\HtmlMeta\ServiceLocator;
 
+/**
+ * Base distributor with sub-distributor tree polling and element attribute helpers.
+ */
 abstract class AbstractDistributor implements Distributor
 {
 	public Element $el;
@@ -80,7 +83,7 @@ abstract class AbstractDistributor implements Distributor
 			$subDistributor->el = $this->el;
 
 			if ($subDistributor->canHandle()) {
-				$subDistributor->pollSubDistributors($this->el) || $subDistributor->handle();
+				$subDistributor->pollSubDistributors() || $subDistributor->handle();
 
 				return true;
 			}

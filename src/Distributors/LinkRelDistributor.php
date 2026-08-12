@@ -4,6 +4,7 @@ namespace Osmuhin\HtmlMeta\Distributors;
 
 use Osmuhin\HtmlMeta\DataMappers\AbstractDataMapper;
 
+/** Handles `<link rel="...">` tags such as canonical. */
 class LinkRelDistributor extends AbstractDistributor
 {
 	public string $rel;

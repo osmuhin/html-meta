@@ -5,13 +5,13 @@ namespace Tests\Unit\Distributors;
 use Osmuhin\HtmlMeta\DataMappers\MetaDataMapper;
 use Osmuhin\HtmlMeta\Distributors\MetaDistributor;
 use PHPUnit\Framework\TestCase;
-use ReflectionProperty;
 use Tests\Unit\Traits\DataMapperInjector;
 use Tests\Unit\Traits\ElementCreator;
 use Tests\Unit\Traits\SetupContainer;
 
 use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertTrue;
+use function PHPUnit\Framework\assertNull;
+use function PHPUnit\Framework\assertSame;
 
 final class MetaDistributorTest extends TestCase
 {
@@ -49,11 +49,6 @@ final class MetaDistributorTest extends TestCase
 
 		$this->distributor->el = self::makeNamedMetaElement('viewport', 'user-scalable=no, width=device-width, initial-scale=1.0');
 		$this->distributor->handle();
-
-		$reflection = new ReflectionProperty($this->distributor, 'testAssignment');
-		$reflection->setAccessible(true);
-
-		assertTrue($reflection->getValue($this->distributor));
 	}
 
 	public function test_can_distributor_handles_charset(): void
@@ -66,13 +61,15 @@ final class MetaDistributorTest extends TestCase
 
 	public function test_can_distributor_handles_empty_content(): void
 	{
-		$this->distributor->el = self::makeNamedMetaElement('meta', "  \n   ");
+		$dataMapper = self::createMock(MetaDataMapper::class);
+		$dataMapper->expects($this->never())->method('assign');
+		self::injectDataMapper($this->distributor, $dataMapper);
+
+		$this->distributor->el = self::makeNamedMetaElement('viewport', "  \n   ");
 		$this->distributor->handle();
 
-		$reflection = new ReflectionProperty($this->distributor, 'testEmptyContent');
-		$reflection->setAccessible(true);
-
-		assertTrue($reflection->getValue($this->distributor));
+		assertNull($this->meta->viewport);
+		assertSame([], $this->meta->unrecognizedMeta);
 	}
 
 	public function test_how_distributor_fills_title(): void

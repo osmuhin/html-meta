@@ -11,6 +11,9 @@ use Osmuhin\HtmlMeta\Dto\Meta;
 use RuntimeException;
 use Symfony\Component\DomCrawler\Crawler as DomCrawler;
 
+/**
+ * Entry point for parsing HTML metadata from a URL, raw HTML, or a Guzzle request.
+ */
 class Crawler
 {
 	public readonly Distributor $distributor;
@@ -19,6 +22,7 @@ class Crawler
 
 	public readonly Container $container;
 
+	/** XPath used to select HTML elements that distributors may handle. */
 	public string $xpath = '//html|//html/head/link|//html/head/meta|//html/head/title';
 
 	private string $html;
@@ -48,6 +52,11 @@ class Crawler
 		ServiceLocator::destructContainer();
 	}
 
+	/**
+	 * Create a crawler configured with optional HTML, URL, and/or Guzzle request.
+	 *
+	 * Parameter priority when fetching HTML: `$html` → `$request` → `$url`.
+	 */
 	public static function init(?string $html = null, ?string $url = null, ?GuzzleRequest $request = null): self
 	{
 		$crawler = new self();
@@ -59,6 +68,7 @@ class Crawler
 		return $crawler;
 	}
 
+	/** Provide raw HTML to parse (skips HTTP fetch). */
 	public function setHtml(string $html): self
 	{
 		$this->html = $html;
@@ -66,6 +76,7 @@ class Crawler
 		return $this;
 	}
 
+	/** Set the page URL and use it as the base for relative URL resolution. */
 	public function setUrl(string $url): self
 	{
 		$this->config->processUrlsWith($this->url = $url);
@@ -73,6 +84,7 @@ class Crawler
 		return $this;
 	}
 
+	/** Use a custom Guzzle request; its URI becomes the base URL. */
 	public function setRequest(GuzzleRequest $request): self
 	{
 		$this->guzzleRequest = $request;
@@ -82,6 +94,7 @@ class Crawler
 		return $this;
 	}
 
+	/** Inject a custom Guzzle client (timeouts, redirect policy, SSRF hardening, etc.). */
 	public function setGuzzleClient(GuzzleClient $guzzleClient): self
 	{
 		$this->guzzleClient = $guzzleClient;
@@ -89,6 +102,11 @@ class Crawler
 		return $this;
 	}
 
+	/**
+	 * Fetch (if needed), parse HTML, and return the populated Meta DTO.
+	 *
+	 * @throws RuntimeException When neither HTML, URL, nor request was provided
+	 */
 	public function run(): Meta
 	{
 		$html = $this->resolveHtmlString();
@@ -190,6 +208,6 @@ class Crawler
 			$this->makeGuzzleRequest()
 		);
 
-		return $response->getBody();
+		return $response->getBody()->getContents();
 	}
 }
