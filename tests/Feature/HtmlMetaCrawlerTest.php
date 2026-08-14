@@ -10,8 +10,10 @@ use Osmuhin\HtmlMeta\Element;
 use PHPUnit\Framework\TestCase;
 use Tests\Feature\Fixtures\CustomTitleDistributor;
 
+use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertInstanceOf;
 use function PHPUnit\Framework\assertSame;
+use function PHPUnit\Framework\assertTrue;
 
 class HtmlMetaCrawlerTest extends TestCase
 {
@@ -242,6 +244,28 @@ class HtmlMetaCrawlerTest extends TestCase
 			'place:location:longitude' => '30.3351',
 			'fb:app_id' => '123456789012345',
 		], $meta->unrecognizedMeta);
+	}
+
+	public function test_parsing_json_ld(): void
+	{
+		$html = file_get_contents(__DIR__ . '/resources/json-ld.html');
+
+		$meta = Crawler::init(html: $html, url: 'https://example.com/blog/')->run();
+
+		assertSame(3, \count($meta->jsonLd->scripts));
+		assertTrue($meta->jsonLd->scripts[0]->valid);
+		assertTrue($meta->jsonLd->scripts[1]->valid);
+		assertFalse($meta->jsonLd->scripts[2]->valid);
+
+		assertSame('Article', $meta->jsonLd->nodes[0]->type);
+		assertSame('https://example.com/news/1', $meta->jsonLd->nodes[0]->id);
+		assertSame('en', $meta->jsonLd->nodes[0]->inLanguage);
+		assertSame('https://example.com/news/1', $meta->jsonLd->nodes[0]->url);
+		assertSame('Hello JSON-LD', $meta->jsonLd->nodes[0]->data['headline']);
+
+		assertSame('WebPage', $meta->jsonLd->nodes[1]->type);
+		assertSame('Organization', $meta->jsonLd->nodes[2]->type);
+		assertSame(3, \count($meta->jsonLd->nodes));
 	}
 
 	public function test_replacing_one_distributor_by_anon_another(): void

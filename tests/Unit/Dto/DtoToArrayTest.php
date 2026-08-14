@@ -61,6 +61,9 @@ final class DtoToArrayTest extends TestCase
 		assertIsArray($array['favicon']);
 		assertIsArray($array['openGraph']);
 		assertIsArray($array['httpEquiv']);
+		assertIsArray($array['jsonLd']);
+		assertArrayHasKey('scripts', $array['jsonLd']);
+		assertArrayHasKey('nodes', $array['jsonLd']);
 		assertSame(['fb:app_id' => '1'], $array['unrecognizedMeta']);
 	}
 

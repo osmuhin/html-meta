@@ -141,6 +141,8 @@ class Meta implements Dto
 
 	public HttpEquiv $httpEquiv;
 
+	public JsonLd $jsonLd;
+
 	public array $unrecognizedMeta = [];
 
 	public function __construct()
@@ -149,6 +151,7 @@ class Meta implements Dto
 		$this->twitter = new Twitter();
 		$this->favicon = new Favicon();
 		$this->httpEquiv = new HttpEquiv();
+		$this->jsonLd = new JsonLd();
 	}
 
 	public function toArray(): array
@@ -169,6 +172,7 @@ class Meta implements Dto
 			'generator' => $this->generator,
 			'htmlAttributes' => $this->htmlAttributes,
 			'httpEquiv' => $this->httpEquiv->toArray(),
+			'jsonLd' => $this->jsonLd->toArray(),
 			'keywords' => $this->keywords,
 			'lang' => $this->lang,
 			'openGraph' => $this->openGraph->toArray(),

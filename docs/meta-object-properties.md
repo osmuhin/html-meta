@@ -297,6 +297,66 @@ $meta->httpEquiv->toArray() === [
 ```
 </details>
 
+### jsonLd
+[`JsonLd`](#jsonld-object)
+
+JSON-LD documents from `<script type="application/ld+json">`.
+
+> [!NOTE]
+> The node `url` property is processed as a URL if not disabled via the `dontProcessUrls` setting.
+
+<details>
+<summary>Example</summary>
+
+```html
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": "https://example.com/news/1",
+    "inLanguage": "en",
+    "url": "/news/1",
+    "headline": "Hello JSON-LD"
+}
+</script>
+```
+
+```php
+$meta->jsonLd->toArray() === [
+    'scripts' => [
+        [
+            'raw' => "...",
+            'decoded' => [
+                '@context' => 'https://schema.org',
+                '@type' => 'Article',
+                '@id' => 'https://example.com/news/1',
+                'inLanguage' => 'en',
+                'url' => '/news/1',
+                'headline' => 'Hello JSON-LD',
+            ],
+            'valid' => true,
+        ],
+    ],
+    'nodes' => [
+        [
+            'type' => 'Article',
+            'id' => 'https://example.com/news/1',
+            'inLanguage' => 'en',
+            'url' => 'https://example.com/news/1',
+            'data' => [
+                '@context' => 'https://schema.org',
+                '@type' => 'Article',
+                '@id' => 'https://example.com/news/1',
+                'inLanguage' => 'en',
+                'url' => '/news/1',
+                'headline' => 'Hello JSON-LD',
+            ],
+        ],
+    ],
+];
+```
+</details>
+
 ### keywords
 `string` `null`
 
@@ -359,6 +419,20 @@ $meta->lang === 'en_US';
 <meta property="og:video:height" content="720">
 
 <meta property="og:determiner" content="a">
+
+<meta property="article:published_time" content="2026-08-12T11:00:00+03:00">
+<meta property="article:author" content="https://example.com/authors/alice">
+<meta property="article:tag" content="php">
+<meta property="article:section" content="Tech">
+
+<meta property="book:isbn" content="9780306406157">
+
+<meta property="profile:first_name" content="Alice">
+<meta property="profile:last_name" content="Example">
+<meta property="profile:username" content="alice">
+<meta property="profile:gender" content="female">
+
+<meta property="og:custom" content="custom-value">
 ```
 
 ```php
@@ -396,7 +470,31 @@ $meta->openGraph->toArray() === [
             'secureUrl' => 'https://example.com/audio.mp3',
             'type' => 'audio/mpeg'
         ]
-    ]
+    ],
+    'article' => [
+        'publishedTime' => '2026-08-12T11:00:00+03:00',
+        'modifiedTime' => null,
+        'expirationTime' => null,
+        'section' => 'Tech',
+        'authors' => ['https://example.com/authors/alice'],
+        'tags' => ['php'],
+        'other' => []
+    ],
+    'book' => [
+        'authors' => [],
+        'isbn' => '9780306406157',
+        'releaseDate' => null,
+        'tags' => [],
+        'other' => []
+    ],
+    'profile' => [
+        'firstName' => 'Alice',
+        'lastName' => 'Example',
+        'username' => 'alice',
+        'gender' => 'female',
+        'other' => []
+    ],
+    'other' => ['og:custom' => 'custom-value']
 ];
 ```
 </details>
@@ -950,7 +1048,152 @@ $meta->openGraph->audio[0]->toArray() === [
 ```
 </details>
 
+### article
+[`OpenGraph\Article`](#og-article-object)
+
+<details>
+<summary>Example</summary>
+
+```html
+<meta property="article:published_time" content="2026-08-12T11:00:00+03:00">
+<meta property="article:section" content="Tech">
+<meta property="article:author" content="https://example.com/authors/alice">
+<meta property="article:tag" content="php">
+```
+
+```php
+$meta->openGraph->article->toArray() === [
+    'publishedTime' => '2026-08-12T11:00:00+03:00',
+    'modifiedTime' => null,
+    'expirationTime' => null,
+    'section' => 'Tech',
+    'authors' => ['https://example.com/authors/alice'],
+    'tags' => ['php'],
+    'other' => []
+];
+```
+</details>
+
+### book
+[`OpenGraph\Book`](#og-book-object)
+
+<details>
+<summary>Example</summary>
+
+```html
+<meta property="book:isbn" content="9780306406157">
+```
+
+```php
+$meta->openGraph->book->toArray() === [
+    'authors' => [],
+    'isbn' => '9780306406157',
+    'releaseDate' => null,
+    'tags' => [],
+    'other' => []
+];
+```
+</details>
+
+### profile
+[`OpenGraph\Profile`](#og-profile-object)
+
+<details>
+<summary>Example</summary>
+
+```html
+<meta property="profile:first_name" content="Alice">
+<meta property="profile:last_name" content="Example">
+<meta property="profile:username" content="alice">
+<meta property="profile:gender" content="female">
+```
+
+```php
+$meta->openGraph->profile->toArray() === [
+    'firstName' => 'Alice',
+    'lastName' => 'Example',
+    'username' => 'alice',
+    'gender' => 'female',
+    'other' => []
+];
+```
+</details>
+
+### other
+`array<string, string>`
+
+Unknown base `og:*` keys that are not mapped to standard fields are stored here.
+
+<details>
+<summary>Example</summary>
+
+```html
+<meta property="og:custom" content="custom-value">
+```
+
+```php
+$meta->openGraph->other === ['og:custom' => 'custom-value'];
+```
+</details>
+
 <a name="twitter-object"><h2>Twitter object</h2></a>
+
+<a name="og-article-object"><h2>OpenGraph\Article object</h2></a>
+
+### publishedTime
+`string` `null`
+
+### modifiedTime
+`string` `null`
+
+### expirationTime
+`string` `null`
+
+### section
+`string` `null`
+
+### authors
+`array<string>`
+
+### tags
+`array<string>`
+
+### other
+`array<string, string>`
+
+<a name="og-book-object"><h2>OpenGraph\Book object</h2></a>
+
+### authors
+`array<string>`
+
+### isbn
+`string` `null`
+
+### releaseDate
+`string` `null`
+
+### tags
+`array<string>`
+
+### other
+`array<string, string>`
+
+<a name="og-profile-object"><h2>OpenGraph\Profile object</h2></a>
+
+### firstName
+`string` `null`
+
+### lastName
+`string` `null`
+
+### username
+`string` `null`
+
+### gender
+`string` `null`
+
+### other
+`array<string, string>`
 
 ### card
 `string` `null`
@@ -1437,3 +1680,62 @@ $audio->secureUrl === 'https://example.com/audio.mp3';
 $audio->type === 'audio/mpeg';
 ```
 </details>
+
+<a name="jsonld-object"><h2>JsonLd object</h2></a>
+
+### scripts
+<code>array<<a href="#jsonld-script-object">JsonLd\Script</a>></code>
+
+One entry per `<script type="application/ld+json">` tag, including invalid JSON.
+
+### nodes
+<code>array<<a href="#jsonld-node-object">JsonLd\Node</a>></code>
+
+Flattened entities from single objects, top-level JSON arrays, and `@graph` lists.
+
+<a name="jsonld-script-object"><h2>JsonLd\Script object</h2></a>
+
+### raw
+`string`
+
+The original script body.
+
+### decoded
+`array` `null`
+
+The result of `json_decode(..., true)`, or `null` when the payload is not valid JSON object/array.
+
+### valid
+`bool`
+
+`false` when the script cannot be decoded as a JSON object or array. Invalid scripts do not produce nodes.
+
+<a name="jsonld-node-object"><h2>JsonLd\Node object</h2></a>
+
+### type
+`string` `array` `null`
+
+Value of `@type`.
+
+### id
+`string` `null`
+
+Value of `@id`.
+
+### inLanguage
+`string` `null`
+
+Value of `inLanguage`.
+
+### url
+`string` `null`
+
+Value of `url` when it is a string.
+
+> [!NOTE]
+> The property is processed as a URL if not disabled via the `dontProcessUrls` setting.
+
+### data
+`array`
+
+The full decoded JSON object for this node.

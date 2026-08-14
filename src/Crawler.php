@@ -23,7 +23,7 @@ class Crawler
 	public readonly Context $context;
 
 	/** XPath used to select HTML elements that distributors may handle. */
-	public string $xpath = '//html|//html/head/link|//html/head/meta|//html/head/title';
+	public string $xpath = '//html|//html/head/link|//html/head/meta|//html/head/title|//script';
 
 	private string $html;
 
@@ -148,7 +148,8 @@ class Crawler
 				\Osmuhin\HtmlMeta\Distributors\LinkRelDistributor::init($context)->useSubDistributors(
 					\Osmuhin\HtmlMeta\Distributors\FaviconDistributor::init($context)
 				)
-			)
+			),
+			\Osmuhin\HtmlMeta\Distributors\JsonLdDistributor::init($context)
 		);
 	}
 

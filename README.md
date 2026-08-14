@@ -8,7 +8,7 @@
     <img src="https://poser.pugx.org/osmuhin/html-meta/license.svg" alt="License">
 </p>
 
-**HTML Meta** is a PHP package for parsing website metadata, such as titles, favicons, OpenGraph tags and others.
+**HTML Meta** is a PHP package for parsing website metadata, such as titles, favicons, Open Graph tags, JSON-LD and others.
 
 ---
 
@@ -106,6 +106,25 @@ $meta->openGraph->profile->firstName;     // profile:first_name
 $meta->openGraph->other;                  // unmapped og:* keys
 ```
 
+### JSON-LD
+
+The crawler collects every `<script type="application/ld+json">` tag (in `head` or `body`).
+
+- Raw payloads and decode status: `$meta->jsonLd->scripts`
+- Flattened entities from objects, JSON arrays, and `@graph`: `$meta->jsonLd->nodes`
+
+Invalid JSON is kept in `scripts` with `valid = false` and does not produce nodes. Node `url` is resolved like other URLs unless `dontProcessUrls()` is set.
+
+```php
+$meta = Crawler::init(html: $html, url: 'https://example.com')->run();
+
+$meta->jsonLd->nodes[0]->type;       // @type
+$meta->jsonLd->nodes[0]->id;         // @id
+$meta->jsonLd->nodes[0]->inLanguage; // inLanguage
+$meta->jsonLd->nodes[0]->url;        // url
+$meta->jsonLd->nodes[0]->data;       // full decoded object
+```
+
 ## Configuration
 <a name="config"></a>
 
@@ -142,7 +161,7 @@ The main interaction happens through the `$crawler` object of type `\Osmuhin\Htm
     * parses the HTML using the configured xpath:
 
         ```php
-        $crawler->xpath = '//html|//html/head/link|//html/head/meta|//html/head/title';
+        $crawler->xpath = '//html|//html/head/link|//html/head/meta|//html/head/title|//script';
         ```
 
         > You are free to overwrite xpath property;
@@ -250,7 +269,8 @@ $crawler->distributor->useSubDistributors(
         \Osmuhin\HtmlMeta\Distributors\LinkRelDistributor::init($crawler->context)->useSubDistributors(
             \Osmuhin\HtmlMeta\Distributors\FaviconDistributor::init($crawler->context)
         )
-    )
+    ),
+    \Osmuhin\HtmlMeta\Distributors\JsonLdDistributor::init($crawler->context)
 );
 ```
 </details>
