@@ -18,6 +18,7 @@
 	<coverage>
 		<report>
 			<html outputDirectory="build/coverage-html" />
+			<clover outputFile="build/logs/clover.xml" />
 		</report>
 	</coverage>
 	<testsuites>

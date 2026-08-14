@@ -149,7 +149,7 @@ final class AbstractDistributorTest extends TestCase
 
 		$this->distributor->useSubDistributors($subDistributor);
 
-		new ReflectionMethod($this->distributor, 'pollSubDistributors')
+		(new ReflectionMethod($this->distributor, 'pollSubDistributors'))
 			->invoke($this->distributor);
 	}
 
@@ -160,14 +160,14 @@ final class AbstractDistributorTest extends TestCase
 		$subDistributor1 = Mockery::mock(SubDistributor1::class);
 		$subDistributor1->shouldReceive('canHandle')->never();
 
-		/** @var \Mockery\MockInterface & \Tests\Unit\Fixtures\Distributors\SubDistributor2 */
+		/** @var \Mockery\MockInterface & SubDistributor2 */
 		$subDistributor2 = Mockery::mock(SubDistributor2::class);
 		$subDistributor2->shouldReceive('canHandle')->once();
 
 		$this->distributor->useSubDistributors($subDistributor1);
 		$this->distributor->setSubDistributor($subDistributor2, $subDistributor1::class);
 
-		new ReflectionMethod($this->distributor, 'pollSubDistributors')
+		(new ReflectionMethod($this->distributor, 'pollSubDistributors'))
 			->invoke($this->distributor);
 	}
 }

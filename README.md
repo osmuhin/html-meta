@@ -4,6 +4,7 @@
 
 <p align="center">
     <img src="https://github.com/osmuhin/html-meta/actions/workflows/tests.yml/badge.svg" alt="Tests status">
+    <img src="https://raw.githubusercontent.com/osmuhin/html-meta/refs/heads/master/.github/coverage.svg" alt="Coverage">
     <a href="https://packagist.org/packages/osmuhin/html-meta"><img src="https://poser.pugx.org/osmuhin/html-meta/d/total.svg" alt="Total Downloads"></a>
     <img src="https://poser.pugx.org/osmuhin/html-meta/license.svg" alt="License">
 </p>
