@@ -79,7 +79,7 @@ final class SortUseGroupsFixer extends AbstractFixer implements WhitespacesAware
 		$tokensAnalyzer = new TokensAnalyzer($tokens);
 		$namespacesImports = $tokensAnalyzer->getImportUseIndexes(true);
 		$declarations = $this->indexDeclarationsByStart(
-			new NamespaceUsesAnalyzer()->getDeclarationsFromTokens($tokens)
+			(new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens)
 		);
 
 		foreach (array_reverse($namespacesImports, true) as $usesPerNamespace) {
