@@ -50,6 +50,9 @@
 		"csfix": [
 			"@php vendor/bin/php-cs-fixer fix"
 		],
+		"csfix:check": [
+			"@php vendor/bin/php-cs-fixer fix --dry-run --diff --ansi"
+		],
 		"test:phpunit": [
 			"@putenv XDEBUG_MODE=coverage",
 			"phpunit --colors=always"

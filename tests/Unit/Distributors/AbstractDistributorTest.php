@@ -129,7 +129,7 @@ final class AbstractDistributorTest extends TestCase
 
 		$this->distributor->useSubDistributors($subDistributor1, $subDistributor2);
 
-		$result = new ReflectionMethod($this->distributor, 'pollSubDistributors')
+		$result = (new ReflectionMethod($this->distributor, 'pollSubDistributors'))
 			->invoke($this->distributor);
 
 		assertTrue($result);

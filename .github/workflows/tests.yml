@@ -9,6 +9,35 @@ on:
     - cron: '45 5 * * 0'
 
 jobs:
+  csfix:
+    name: PHP CS Fixer
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: ctype, json, mbstring, tokenizer
+        tools: composer:v2
+        coverage: none
+
+    - name: Install PHP dependencies
+      env:
+        COMPOSER_CAFILE: /etc/ssl/certs/ca-certificates.crt
+      run: |
+        composer config --global secure-http true
+        composer config --global cafile "$COMPOSER_CAFILE"
+
+        composer update --prefer-stable --no-interaction --prefer-dist --no-progress --ansi \
+          || composer update --prefer-stable --no-interaction --prefer-source --no-progress --ansi
+
+    - name: Check coding style
+      run: composer csfix:check
+
   tests:
     runs-on: ${{ matrix.os }}
     strategy:
