@@ -38,53 +38,6 @@ jobs:
     - name: Check coding style
       run: composer csfix:check
 
-  coverage:
-    name: Coverage
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v5
-
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-        extensions: ctype, dom, json, libxml, mbstring, phar, tokenizer, xml
-        tools: composer:v2
-        coverage: xdebug
-
-    - name: Install PHP dependencies
-      env:
-        COMPOSER_CAFILE: /etc/ssl/certs/ca-certificates.crt
-      run: |
-        composer config --global secure-http true
-        composer config --global cafile "$COMPOSER_CAFILE"
-
-        composer update --prefer-stable --no-interaction --prefer-dist --no-progress --ansi \
-          || composer update --prefer-stable --no-interaction --prefer-source --no-progress --ansi
-
-    - name: Run tests with coverage
-      run: composer test:phpunit:partial
-
-    - name: Generate coverage badge
-      run: php .github/scripts/coverage-badge.php build/logs/clover.xml .github/coverage.svg
-
-    - name: Commit coverage badge
-      if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
-      run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git add .github/coverage.svg
-        if git diff --cached --quiet; then
-          echo "Coverage badge is up to date"
-          exit 0
-        fi
-        git commit -m "chore: update coverage badge [skip ci]"
-        git push
-
   tests:
     runs-on: ${{ matrix.os }}
     strategy:
