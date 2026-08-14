@@ -27,7 +27,7 @@ class Book implements Dto
 			'isbn' => $this->isbn,
 			'releaseDate' => $this->releaseDate,
 			'tags' => $this->tags,
-			'other' => $this->other,
+			'other' => $this->other
 		];
 	}
 }

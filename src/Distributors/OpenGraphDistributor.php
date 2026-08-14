@@ -21,7 +21,7 @@ class OpenGraphDistributor extends AbstractDistributor
 			'og' => 'setOg',
 			'article' => 'setExtendedOg',
 			'book' => 'setExtendedOg',
-			'profile' => 'setExtendedOg',
+			'profile' => 'setExtendedOg'
 		];
 	}
 

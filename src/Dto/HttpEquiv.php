@@ -90,7 +90,7 @@ class HttpEquiv implements Dto
 			'contentSecurityPolicy' => $this->contentSecurityPolicy,
 			'xDnsPrefetchControl' => $this->xDnsPrefetchControl,
 			'accessControlAllowOrigin' => $this->accessControlAllowOrigin,
-			'other' => $this->other,
+			'other' => $this->other
 		];
 	}
 }

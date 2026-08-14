@@ -24,7 +24,7 @@ class JsonLd implements Dto
 	{
 		return [
 			'scripts' => array_map(fn (Script $script) => $script->toArray(), $this->scripts),
-			'nodes' => array_map(fn (Node $node) => $node->toArray(), $this->nodes),
+			'nodes' => array_map(fn (Node $node) => $node->toArray(), $this->nodes)
 		];
 	}
 }

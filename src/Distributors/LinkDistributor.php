@@ -15,6 +15,6 @@ class LinkDistributor extends AbstractDistributor
 	 */
 	public function handle(): void
 	{
-
+		//
 	}
 }

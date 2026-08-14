@@ -6,7 +6,6 @@ use GuzzleHttp\Psr7\Request as GuzzleRequest;
 use Osmuhin\HtmlMeta\Crawler;
 use Osmuhin\HtmlMeta\Distributors\TitleDistributor;
 use Osmuhin\HtmlMeta\Dto\Meta;
-use Osmuhin\HtmlMeta\Element;
 use PHPUnit\Framework\TestCase;
 use Tests\Feature\Fixtures\CustomTitleDistributor;
 
@@ -145,7 +144,7 @@ class HtmlMetaCrawlerTest extends TestCase
 					'height' => null,
 					'sizes' => null
 				]
-			],
+			]
 		], $meta->favicon->toArray());
 	}
 
@@ -194,7 +193,7 @@ class HtmlMetaCrawlerTest extends TestCase
 					'type' => 'image/jpeg',
 					'width' => 1200,
 					'height' => 630,
-					'alt' => 'Image description',
+					'alt' => 'Image description'
 				]
 			],
 			'videos' => [
@@ -242,7 +241,7 @@ class HtmlMetaCrawlerTest extends TestCase
 		assertSame([
 			'place:location:latitude' => '59.9343',
 			'place:location:longitude' => '30.3351',
-			'fb:app_id' => '123456789012345',
+			'fb:app_id' => '123456789012345'
 		], $meta->unrecognizedMeta);
 	}
 

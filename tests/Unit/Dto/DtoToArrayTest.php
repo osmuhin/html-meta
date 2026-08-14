@@ -28,7 +28,7 @@ final class DtoToArrayTest extends TestCase
 			'image' => null,
 			'imageAlt' => null,
 			'creator' => null,
-			'other' => ['twitter:app:id:iphone' => '123'],
+			'other' => ['twitter:app:id:iphone' => '123']
 		], $twitter->toArray());
 	}
 

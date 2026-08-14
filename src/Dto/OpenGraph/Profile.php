@@ -25,7 +25,7 @@ class Profile implements Dto
 			'lastName' => $this->lastName,
 			'username' => $this->username,
 			'gender' => $this->gender,
-			'other' => $this->other,
+			'other' => $this->other
 		];
 	}
 }

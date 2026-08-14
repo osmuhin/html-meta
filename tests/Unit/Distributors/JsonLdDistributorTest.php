@@ -27,7 +27,7 @@ final class JsonLdDistributorTest extends TestCase
 			['script', ['type' => 'APPLICATION/LD+JSON'], true],
 			['script', ['type' => 'text/javascript'], false],
 			['script', [], false],
-			['meta', ['type' => 'application/ld+json'], false],
+			['meta', ['type' => 'application/ld+json'], false]
 		];
 	}
 

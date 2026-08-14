@@ -57,7 +57,7 @@ class OpenGraphDataMapper extends AbstractDataMapper
 			'og:audio' => $this->guessMimeType($this->url('url')),
 			'og:audio:url' => $this->guessMimeType($this->url('url')),
 			'og:audio:secure_url' => $this->guessMimeType($this->url('secureUrl')),
-			'og:audio:type' => $this->forceOverwrite('type'),
+			'og:audio:type' => $this->forceOverwrite('type')
 		];
 	}
 
@@ -67,7 +67,7 @@ class OpenGraphDataMapper extends AbstractDataMapper
 			'article:published_time' => 'publishedTime',
 			'article:modified_time' => 'modifiedTime',
 			'article:expiration_time' => 'expirationTime',
-			'article:section' => 'section',
+			'article:section' => 'section'
 		];
 	}
 
@@ -75,7 +75,7 @@ class OpenGraphDataMapper extends AbstractDataMapper
 	{
 		return [
 			'book:isbn' => 'isbn',
-			'book:release_date' => 'releaseDate',
+			'book:release_date' => 'releaseDate'
 		];
 	}
 
@@ -85,7 +85,7 @@ class OpenGraphDataMapper extends AbstractDataMapper
 			'profile:first_name' => 'firstName',
 			'profile:last_name' => 'lastName',
 			'profile:username' => 'username',
-			'profile:gender' => 'gender',
+			'profile:gender' => 'gender'
 		];
 	}
 

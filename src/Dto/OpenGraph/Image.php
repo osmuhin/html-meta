@@ -27,7 +27,7 @@ class Image implements Dto
 			'type' => $this->type,
 			'width' => $this->width,
 			'height' => $this->height,
-			'alt' => $this->alt,
+			'alt' => $this->alt
 		];
 	}
 }

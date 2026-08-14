@@ -24,16 +24,16 @@ final class OpenGraphDistributorTest extends TestCase
 	public static function metaPropertiesProvider(): array
 	{
 		return [
-			[null, "123", false],
+			[null, '123', false],
 			['baz', null, false],
 			['', '', false],
 			[" \t  ", "\n\t  ", false],
 			[" \t  ", 'foo', false],
 			['bar', "\n\t  ", false],
-			['bar', "123123", false],
-			['foo:bar', "123123", false],
-			['og', "123123", false],
-			['og:title', "123123", true],
+			['bar', '123123', false],
+			['foo:bar', '123123', false],
+			['og', '123123', false],
+			['og:title', '123123', true]
 		];
 	}
 

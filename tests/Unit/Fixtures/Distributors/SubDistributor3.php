@@ -13,6 +13,6 @@ class SubDistributor3 extends AbstractDistributor
 
 	public function handle(): void
 	{
-
+		//
 	}
 }

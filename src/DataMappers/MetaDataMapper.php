@@ -25,7 +25,7 @@ class MetaDataMapper extends AbstractDataMapper
 			'keywords' => 'keywords',
 			'referrer' => 'referrer',
 			'robots' => 'robots',
-			'viewport' => 'viewport',
+			'viewport' => 'viewport'
 		];
 	}
 

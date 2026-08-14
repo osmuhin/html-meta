@@ -24,7 +24,7 @@ class Node implements Dto
 			'id' => $this->id,
 			'inLanguage' => $this->inLanguage,
 			'url' => $this->url,
-			'data' => $this->data,
+			'data' => $this->data
 		];
 	}
 }

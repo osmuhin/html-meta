@@ -18,7 +18,7 @@ class Script implements Dto
 		return [
 			'raw' => $this->raw,
 			'decoded' => $this->decoded,
-			'valid' => $this->valid,
+			'valid' => $this->valid
 		];
 	}
 }

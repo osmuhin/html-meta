@@ -3,7 +3,6 @@
 namespace Tests\Unit\Fixtures\Distributors;
 
 use Osmuhin\HtmlMeta\Distributors\AbstractDistributor;
-use Osmuhin\HtmlMeta\Element;
 
 class SubDistributor1 extends AbstractDistributor
 {
@@ -14,6 +13,6 @@ class SubDistributor1 extends AbstractDistributor
 
 	public function handle(): void
 	{
-
+		//
 	}
 }

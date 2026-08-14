@@ -35,7 +35,7 @@ class UtilsTest extends TestCase
 			['http://example4.com/some-path-1/some-path-2', ['http://example4.com', 'some-path-1/some-path-2']],
 			['//cdn.example.com/path/', ['//cdn.example.com', 'path']],
 			['/some-path-1/path/', ['', 'some-path-1/path']],
-			['example2.com', ['', 'example2.com']],
+			['example2.com', ['', 'example2.com']]
 		];
 	}
 
@@ -53,7 +53,7 @@ class UtilsTest extends TestCase
 			['https://x.com/some-path', 'favicon.ico', 'https://x.com/favicon.ico'],
 			['https://x.com/some-path/', 'favicon.ico', 'https://x.com/some-path/favicon.ico'],
 			['https://x.com/some-path', '/favicon.ico', 'https://x.com/favicon.ico'],
-			['https://x.com/some-path', 'https://apple.com/favicon.ico', 'https://apple.com/favicon.ico'],
+			['https://x.com/some-path', 'https://apple.com/favicon.ico', 'https://apple.com/favicon.ico']
 		];
 	}
 

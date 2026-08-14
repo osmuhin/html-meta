@@ -34,7 +34,7 @@ final class HttpEquivDistributorTest extends TestCase
 			[['http-equiv' => '   '], false],
 			[['http-equiv' => ' refresh  ', 'content' => null], false],
 			[['http-equiv' => ' refresh  ', 'content' => " \n  "], false],
-			[['http-equiv' => ' refresh  ', 'content' => " \nasd  "], true],
+			[['http-equiv' => ' refresh  ', 'content' => " \nasd  "], true]
 		];
 	}
 

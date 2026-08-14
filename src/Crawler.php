@@ -119,7 +119,8 @@ class Crawler
 	{
 		$context = $this->context;
 
-		return new class($context) extends AbstractDistributor {
+		return new class($context) extends AbstractDistributor
+		{
 			public function canHandle(): bool
 			{
 				return true;

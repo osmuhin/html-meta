@@ -21,7 +21,7 @@ class HttpEquivDataMapper extends AbstractDataMapper
 			'refresh' => 'refresh',
 			'content-security-policy' => 'contentSecurityPolicy',
 			'x-dns-prefetch-control' => 'xDnsPrefetchControl',
-			'access-control-allow-origin' => 'accessControlAllowOrigin',
+			'access-control-allow-origin' => 'accessControlAllowOrigin'
 		];
 	}
 

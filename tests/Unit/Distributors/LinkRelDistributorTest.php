@@ -31,7 +31,7 @@ final class LinkRelDistributorTest extends TestCase
 		$this->distributor->el = self::makeElement('link', ['rel' => " \t  \n"]);
 		assertFalse($this->distributor->canHandle());
 
-		$this->distributor->el = self::makeElement('link', ['rel' => "icon"]);
+		$this->distributor->el = self::makeElement('link', ['rel' => 'icon']);
 		assertTrue($this->distributor->canHandle());
 	}
 

@@ -33,7 +33,7 @@ class Article implements Dto
 			'section' => $this->section,
 			'authors' => $this->authors,
 			'tags' => $this->tags,
-			'other' => $this->other,
+			'other' => $this->other
 		];
 	}
 }

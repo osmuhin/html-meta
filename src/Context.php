@@ -11,7 +11,7 @@ final class Context
 {
 	public function __construct(
 		public readonly Meta $meta,
-		public readonly Config $config,
+		public readonly Config $config
 	) {
 		//
 	}

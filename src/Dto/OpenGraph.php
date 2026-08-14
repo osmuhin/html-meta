@@ -79,7 +79,7 @@ class OpenGraph implements Dto
 			'article' => $this->article->toArray(),
 			'book' => $this->book->toArray(),
 			'profile' => $this->profile->toArray(),
-			'other' => $this->other,
+			'other' => $this->other
 		];
 	}
 }

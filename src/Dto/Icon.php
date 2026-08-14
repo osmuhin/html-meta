@@ -31,7 +31,7 @@ class Icon implements Dto
 			'extension' => $this->extension,
 			'width' => $this->width,
 			'height' => $this->height,
-			'sizes' => $this->sizes,
+			'sizes' => $this->sizes
 		];
 	}
 }

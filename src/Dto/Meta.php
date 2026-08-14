@@ -183,7 +183,7 @@ class Meta implements Dto
 			'twitter' => $this->twitter->toArray(),
 			'viewport' => $this->viewport,
 			'canonical' => $this->canonical,
-			'unrecognizedMeta' => $this->unrecognizedMeta,
+			'unrecognizedMeta' => $this->unrecognizedMeta
 		];
 	}
 }

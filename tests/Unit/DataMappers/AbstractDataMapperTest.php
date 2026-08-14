@@ -24,7 +24,7 @@ final class AbstractDataMapperTest extends TestCase
 			[true, '15.5', null],
 			[true, 'asdasd', null],
 			[false, '15', '15'],
-			[false, 'asdasd', 'asdasd'],
+			[false, 'asdasd', 'asdasd']
 		];
 	}
 
@@ -32,7 +32,7 @@ final class AbstractDataMapperTest extends TestCase
 	{
 		return [
 			[true, 'favicon.ico', 'http://example.com/api/favicon.ico'],
-			[false, 'favicon.ico', 'favicon.ico'],
+			[false, 'favicon.ico', 'favicon.ico']
 		];
 	}
 
@@ -132,7 +132,8 @@ final class AbstractDataMapperTest extends TestCase
 
 	public function test_force_overwriting(): void
 	{
-		$dataMapper = new class($this->context) extends AbstractDataMapper {
+		$dataMapper = new class($this->context) extends AbstractDataMapper
+		{
 			public function __construct(Context $context)
 			{
 				parent::__construct($context);

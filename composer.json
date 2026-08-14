@@ -24,6 +24,7 @@
 		"symfony/mime": ">=6.0"
 	},
 	"require-dev": {
+		"friendsofphp/php-cs-fixer": "^3.95",
 		"mockery/mockery": "^1.6.12",
 		"phpunit/phpunit": "^11.5",
 		"symfony/var-dumper": "^7.1"
@@ -35,6 +36,7 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
+			"Fixer\\": "fixer/",
 			"Tests\\": "tests/"
 		}
 	},
@@ -45,6 +47,9 @@
 		"sort-packages": true
 	},
 	"scripts": {
+		"csfix": [
+			"@php vendor/bin/php-cs-fixer fix"
+		],
 		"test:phpunit": [
 			"@putenv XDEBUG_MODE=coverage",
 			"phpunit --colors=always"

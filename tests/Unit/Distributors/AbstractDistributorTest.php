@@ -32,7 +32,8 @@ final class AbstractDistributorTest extends TestCase
 	{
 		$context = $this->context;
 
-		$this->distributor = new class($context) extends AbstractDistributor {
+		$this->distributor = new class($context) extends AbstractDistributor
+		{
 			public function canHandle(): bool
 			{
 				return true;
@@ -40,7 +41,6 @@ final class AbstractDistributorTest extends TestCase
 
 			public function handle(): void
 			{
-
 			}
 		};
 	}
@@ -55,7 +55,8 @@ final class AbstractDistributorTest extends TestCase
 	#[TestDox('Test whether InvalidArgumentException will be thrown in sub distributor dont implements required interface')]
 	public function test_whether_exception_will_be_thrown(): void
 	{
-		$subDistributor = new class {};
+		$subDistributor = new class
+		{};
 		$class = $subDistributor::class;
 
 		$this->expectException(InvalidArgumentException::class);
@@ -84,7 +85,7 @@ final class AbstractDistributorTest extends TestCase
 		$this->distributor->useSubDistributors(
 			$sd1 = SubDistributor1::init($this->context),
 			$sd2 = SubDistributor2::init($this->context)->useSubDistributors(
-				$sd3 = SubDistributor3::init($this->context),
+				$sd3 = SubDistributor3::init($this->context)
 			)
 		);
 
@@ -104,7 +105,7 @@ final class AbstractDistributorTest extends TestCase
 
 		$this->distributor->useSubDistributors($subDistributor);
 
-		$result = (new ReflectionMethod($this->distributor, 'pollSubDistributors'))
+		$result = new ReflectionMethod($this->distributor, 'pollSubDistributors')
 			->invoke($this->distributor);
 
 		assertFalse($result);
@@ -128,7 +129,7 @@ final class AbstractDistributorTest extends TestCase
 
 		$this->distributor->useSubDistributors($subDistributor1, $subDistributor2);
 
-		$result = (new ReflectionMethod($this->distributor, 'pollSubDistributors'))
+		$result = new ReflectionMethod($this->distributor, 'pollSubDistributors')
 			->invoke($this->distributor);
 
 		assertTrue($result);
@@ -148,7 +149,7 @@ final class AbstractDistributorTest extends TestCase
 
 		$this->distributor->useSubDistributors($subDistributor);
 
-		(new ReflectionMethod($this->distributor, 'pollSubDistributors'))
+		new ReflectionMethod($this->distributor, 'pollSubDistributors')
 			->invoke($this->distributor);
 	}
 
@@ -166,7 +167,7 @@ final class AbstractDistributorTest extends TestCase
 		$this->distributor->useSubDistributors($subDistributor1);
 		$this->distributor->setSubDistributor($subDistributor2, $subDistributor1::class);
 
-		(new ReflectionMethod($this->distributor, 'pollSubDistributors'))
+		new ReflectionMethod($this->distributor, 'pollSubDistributors')
 			->invoke($this->distributor);
 	}
 }
